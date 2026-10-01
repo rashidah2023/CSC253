@@ -1,0 +1,124 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Introduction to Audacity 4.0</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F4F2EF;--card:#fff;--ink:#1d1a17;--mut:#5f5a54;--acc:#E8590C;--blu:#2F5BEA;--line:#e3ded8;--ok:#e1f5e6;--bad:#fde4e4;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#15130f;--card:#201d18;--ink:#efebe4;--mut:#a79f94;--line:#332f28;--ok:#16391f;--bad:#43201f}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.2;margin:.2em 0 .5em}
+header{background:#1d1a17;color:#fff;padding:10px 16px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header b{font-family:'Space Grotesk',sans-serif}
+nav{display:flex;gap:6px;overflow-x:auto;padding-top:6px}
+nav button{background:none;border:1px solid #ffffff44;color:#fff;border-radius:999px;padding:5px 13px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--acc);border-color:var(--acc)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);transition:width .4s}
+main{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:4px 14px}
+summary{cursor:pointer;font-weight:700;padding:8px 0}
+.tip,.rem,.mis{border-left:4px solid var(--blu);background:var(--ok);padding:8px 12px;border-radius:6px;margin:10px 0}
+.rem{border-color:#c98a00;background:#fff3d1;color:#3a2c00}.mis{border-color:#c0392b;background:var(--bad)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer;font-size:1rem}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt.ok{background:var(--ok);border-color:#2e9e4f}.opt.bad{background:var(--bad);border-color:#c0392b}
+.q{border-bottom:1px solid var(--line);padding:8px 0}.fb{margin:4px 0;color:var(--mut)}.score{font-weight:700}
+label.ck{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}
+textarea{width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--line);padding:7px;text-align:left}.tbl{overflow-x:auto}
+.badge{text-align:center;opacity:.35}.badge.got{opacity:1}.badge div{font-size:2rem}
+.wv{width:100%;height:auto;background:#1d1a17;border-radius:8px}
+:focus-visible{outline:3px solid var(--blu);outline-offset:2px}
+</style></head><body>
+<header><b>🎧 Introduction to Audacity 4.0</b> <span id="tp" style="float:right;font-size:.85rem"></span><nav id="nav"></nav></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s);let cur=0,S={chk:{},ans:{},ref:{},rub:-1};
+const PG=['Home','Lesson 1','Lesson 2','Lesson 3','Lesson 4','Quiz','Final Project'];
+const T=a=>`<div class=tip>💡 <b>TIP</b><br>${a}</div>`,R=a=>`<div class=rem>📌 <b>REMEMBER</b><br>${a}</div>`,X=a=>`<div class=mis>⚠️ <b>COMMON MISTAKE</b><br>${a}</div>`;
+const NT='Audacity 4.0 has a redesigned interface, so some menu and button names may differ slightly. If you cannot find an item, try the Classic workspace or check the Help menu.';
+const M=[
+{n:'Know Audacity 4.0',icon:'🎧',badge:'Audio Explorer',obj:['Explain waveform, amplitude, clipping, sample rate and mono/stereo','Identify the main areas of the Audacity 4.0 interface','Import, play, zoom and select audio','Save a project and export audio'],
+L:[['Audio basics','A <b>waveform</b> shows sound over time. Taller waves are louder (<b>amplitude</b>). If a wave is flattened at the top it is <b>clipping</b> (distorted). <b>Sample rate</b> (e.g. 44100 Hz) is how many samples per second. <b>Mono</b> is one channel, <b>stereo</b> is two.'+X('Recording too loudly. Clipped audio cannot be fixed later.')],
+['The Audacity 4.0 interface','Audacity 4.0 has a new Qt interface with a <b>home screen</b> showing recent projects. Panels and toolbars can be moved, docked or hidden. Choose a <b>workspace</b>: Modern, Classic or Music. Main parts: toolbars, track area with clips, playhead, and the timeline.'+T('If you prefer the older look, switch to the Classic workspace.')],
+['File types and responsible use','<b>.aup4</b> is the Audacity 4 project (keeps edits). <b>WAV</b> is high quality. <b>MP3</b> is small. Projects from Audacity 3 (.aup3) can be opened and converted, but not saved back.'+R('Only use audio you have permission to use, and get consent before recording someone.')]],
+N:[['A. Open Audacity and set up',['Open Audacity 4.0. The home screen appears.','Click New project (or choose a recent project).','Choose your workspace: Modern, Classic or Music.','Make sure the correct headphones or speakers are selected as the output device.']],
+['B. Import and explore audio',['Choose File › Import › Audio (or drag a file into the window).','Select the sample file and click Open. It appears as a clip in a track.','Press Space to play and stop.','Zoom in and out with the zoom controls or Ctrl + mouse wheel to see detail.','Click and drag on the clip to select a region.']],
+['C. Save and export',['Choose File › Save project and name it Lab1_YourName (.aup4).','Choose File › Export Audio.','Pick WAV or MP3 and a folder, then click Export.','Open the exported file in a media player to confirm it plays.']]],
+lab:['Lab 1 — Audacity Exploration','25–30 min',['Open Audacity 4.0','Choose a workspace','Import the sample audio','Play and stop with Space','Zoom in and out','Select a region','Rename the track','Save the project (.aup4)','Export as WAV or MP3']],
+Q:[{q:'A flattened waveform top means…',o:['Clipping','Silence','Mono'],a:0,e:'Clipping means the signal was too loud and distorted.'},{q:'True or false: .aup4 is the Audacity 4 project format.',o:['True','False'],a:0,e:'Yes, it stores your edits and clips.'},{q:'Which format is small and good for sharing?',o:['MP3','AUP4','Project'],a:0,e:'MP3 is compressed and small.'},{q:'Which workspace looks like the older Audacity?',o:['Classic','Music','Mixer'],a:0,e:'Classic keeps the familiar layout.'}],
+ref:['What is the difference between a project file and an exported file?','What should you check before using someone else’s audio?']},
+{n:'Edit an Existing Audio File',icon:'✂️',badge:'Audio Editor',obj:['Select, cut, copy, paste and delete audio','Trim silence','Split and rearrange clips','Use labels and undo'],
+L:[['Cut, trim and split','<b>Cut</b> removes and keeps a copy to paste. <b>Delete</b> removes it. <b>Trim</b> removes silence at the start and end. <b>Split</b> separates a clip into two so you can move parts. Audacity 4.0 has a one-click Split tool and a Ripple delete that closes the gap.'+T('Always work on a copy of the original file.')],
+['Edit workflow','Listen first, mark problems with labels, then edit. Zoom in to cut at the quietest point between words.'+X('Cutting in the middle of a word. Cut in the small gap instead.')]],
+N:[['A. Trim silence at the start and end',['Import the sample audio.','Click and drag to select the silence at the beginning.','Press Delete.','Do the same for the silence at the end.','Press Space to listen and check.']],
+['B. Remove a mistake (cough or umm)',['Zoom in on the mistake and press Space to find it.','Drag across only the mistake.','Use Delete to remove it, or Ripple delete to remove it and close the gap.','Listen around the cut and undo with Ctrl+Z if it sounds wrong.']],
+['C. Split and rearrange clips',['Click the playhead position where you want to split.','Choose the Split tool or the Split command to separate the clip.','Repeat to make 3 clips.','Drag a clip to a new position, or copy and paste to repeat a section.','Use alignment guides and snapping to place clips neatly.']],
+['D. Use labels and History',['Place the playhead at an important point and add a label (Edit or Labels menu).','Type a name, e.g. Intro.','Open the History panel to review or undo steps.']]],
+lab:['Lab 2 — Edit the Raw Recording','35–40 min',['Import the raw recording','Trim the start and end silence','Remove at least two mistakes','Split into three clips','Reorder two clips','Add a label','Save the project','Export as MP3']],
+ch:'<b>Mini Challenge:</b> Make the 2-minute recording into a clean 60-second version with a clear start and end.',
+Q:[{q:'Best place to cut speech?',o:['In the gap between words','Mid-word','At the loudest point'],a:0,e:'Gaps hide the cut.'},{q:'Which closes the gap after deleting?',o:['Ripple delete','Normalize','Echo'],a:0,e:'Ripple delete shifts later audio left.'},{q:'True or false: Split separates a clip into two.',o:['True','False'],a:0,e:'Then each part can be moved.'},{q:'Undo shortcut?',o:['Ctrl+Z','Ctrl+P','Ctrl+S'],a:0,e:'Ctrl+Z undoes the last step.'}],
+ref:['Which edit improved the audio most?','Why should you keep the original file?']},
+{n:'Apply Effects',icon:'✨',badge:'Effects Master',obj:['Fix volume and noise problems','Add fades and a creative effect','Use effects sparingly'],
+L:[['Fix first, then style','<b>Fix</b>: Normalize (even volume), Amplify, Noise Reduction (hiss), Equalizer (clearer voice). <b>Style</b>: Fade in/out, Echo, Reverb, Change speed/pitch.'+R('Effects should help the listener, not distract them.')],
+['Using the envelope','The envelope tool draws gain changes on the live waveform, so you can lower music under a voice.'+T('Apply an effect to a selection, or to the whole clip if nothing is selected.')]],
+N:[['A. Normalize volume',['Select the clip (or press Ctrl+A for everything).','Open the Effect menu and choose Normalize.','Set peak level to about -1 dB and click Apply.','Play it. If it is still too quiet, check the track gain slider.']],
+['B. Reduce background noise',['Select a few seconds of only background noise.','Open Effect › Noise Reduction and capture the noise profile (or Get Noise Profile).','Select the whole clip.','Run Noise Reduction with mild settings and listen.','Undo and try lower values if the voice sounds robotic.']],
+['C. Fade in and fade out',['Select the first 2 seconds, then apply Fade In from the Effect menu.','Select the last 2–3 seconds, then apply Fade Out.']],
+['D. Creative effect (use one)',['Select a short phrase.','Choose Echo or Reverb, or Change Speed/Pitch.','Click Preview if available, then Apply.','Delete the effect with Ctrl+Z if it hurts clarity.']],
+['E. Envelope for volume control',['Choose the Envelope tool.','Click on the clip to add points.','Drag points down where the music should be quieter.','Play to check that the voice is clear.']]],
+lab:['Lab 3 — Make It Sound Better','30–35 min',['Normalize the edited audio','Reduce background noise','Add a fade in','Add a fade out','Apply one creative effect','Compare before and after','Write why you chose each effect']],
+Q:[{q:'You hear steady hiss. Use…',o:['Noise Reduction','Echo','Fade In'],a:0,e:'Noise Reduction removes steady background noise.'},{q:'Volume is uneven between clips. Use…',o:['Normalize','Reverb','Split'],a:0,e:'Normalize sets a consistent peak level.'},{q:'To end a track smoothly…',o:['Fade Out','Delete','Amplify'],a:0,e:'A fade out avoids an abrupt stop.'},{q:'True or false: More effects always sound better.',o:['True','False'],a:1,e:'Too many effects distract.'}],
+ref:['Which effect helped most? Why?','When did an effect make the audio worse?']},
+{n:'Create a New Audio File',icon:'🎙️',badge:'Audio Creator',obj:['Record a voice-over','Add and balance music','Fade, export and tag a final file'],
+L:[['Plan a promo','Write a short script: hook, message, call-to-action. Aim for 30–60 seconds. Record a clear voice, then add music at a lower volume.'+T('Speak slightly away from the microphone to avoid loud puffs of air.')],
+['Mixing basics','Use two tracks: Voice and Music. The voice should be louder. Use track gain and the envelope to balance them.']],
+N:[['A. Record the voice-over',['Connect the microphone and choose it as the input device.','Do a test: press Record, say a sentence, and watch the level meter. Peaks should stay below the red.','Press Record and read your script. Press Stop.','Cut mistakes and repeat any bad lines.']],
+['B. Add background music',['Import a music file you are allowed to use (File › Import › Audio).','Move it onto its own track below the voice.','Trim the music to the length of the voice.','Lower the music with the track gain slider or the envelope.']],
+['C. Mix, fade and finish',['Use the Envelope tool to lower music while speaking and raise it slightly at the intro and outro.','Add a fade in at the start and fade out at the end.','Listen from start to finish and fix anything unclear.']],
+['D. Export the final file',['Choose File › Save project (.aup4).','Choose File › Export Audio and pick MP3 or WAV.','Enter metadata tags (title and artist) if asked.','Name it Promo_YourName and export.']]],
+lab:['Lab 4 — Campus Radio Promo','35–40 min',['Write a 30–60 second script','Record the voice-over','Add a music track','Lower the music under the voice','Add fade in and fade out','Save the project (.aup4)','Export as MP3 or WAV']],
+ch:'<b>Challenge:</b> Create a Campus Radio Promo for a university event. It needs at least 2 tracks, a fade out and balanced volume. Submit the .aup4 project, the exported file, and 2–3 sentences about your choices.',
+Q:[{q:'Music should be…',o:['Quieter than the voice','Louder than the voice','Mono only'],a:0,e:'The message is the voice.'},{q:'Where should recording peaks stay?',o:['Below the red','At the red','Always in the red'],a:0,e:'Avoid clipping.'},{q:'Which file do you submit to show editing steps?',o:['.aup4 project','Screenshot only','None'],a:0,e:'It stores clips and edits.'},{q:'True or false: Check copyright of music.',o:['True','False'],a:0,e:'Use permitted music only.'}],
+ref:['How did you balance voice and music?','How did you use audio responsibly?']}];
+const SC=[['A cough is in the middle of a sentence.',['Delete the selected region','Add Echo','Normalize','Fade Out'],0,'Select just the cough and delete it.'],['There is steady fan hiss throughout.',['Noise Reduction','Split','Reverb','Delete'],0,'Noise Reduction targets steady noise.'],['One clip is much quieter than another.',['Normalize','Echo','Trim','Label'],0,'Normalize evens out levels.'],['The audio ends abruptly.',['Fade Out','Noise Reduction','Reverb','Amplify'],0,'A fade out gives a smooth ending.'],['Music drowns the speaker.',['Lower the music with gain or the envelope','Add Echo','Trim silence','Export WAV'],0,'Balance the music below the voice.'],['You need to move one sentence elsewhere.',['Split, then drag the clip','Reverb','Normalize','Fade In'],0,'Splitting makes a movable clip.']].map(s=>({q:s[0],o:s[1],a:0,e:s[3]}));
+const FQ=['Is the voice clear and easy to understand?','Is the volume consistent?','Is background noise reduced?','Are cuts smooth, with no clicks?','Is music quieter than the voice?','Are fade in and fade out used?','Is the length 30–60 seconds?','Are the .aup4 and exported file both saved?','Is all audio permitted for use?'];
+const RB=[['Clarity of speech',20,'Voice is clear, with no distortion or long silences.'],['Editing quality',20,'Clean cuts, trimmed silence, sensible clip order.'],['Effects use',15,'Effects are purposeful and subtle.'],['Mixing and balance',20,'Music supports the voice; levels are even.'],['Technical export',15,'Correct project and exported files with a sensible name.'],['Responsible use and originality',10,'Permitted audio, consent, and acknowledged sources.']];
+const SES=[['0–10','Introduction / objectives'],['10–25','Instructor demonstration'],['25–50','Guided practice'],['50–80','Individual exercise'],['80–105','Mini challenge'],['105–115','Quiz'],['115–120','Save, submit, reflect']];
+function cnt(p){return Object.keys(S.chk).filter(k=>S.chk[k]&&k.startsWith(p)).length+Object.keys(S.ans).filter(k=>k.startsWith(p)).length}
+function pct(i){const m=M[i],n=i+1,t=m.L.length+m.lab.length-2+m.Q.length;return Math.min(100,Math.round((cnt('l'+n+'-')+cnt('e'+n+'-')+cnt('q'+n+'-'))/t*100))}
+function projDone(){return FQ.every((_,i)=>S.chk['p-'+i])}
+function all(){return Math.round(([0,1,2,3].reduce((a,i)=>a+pct(i),0)+(projDone()?100:0))/5)}
+function bar(p){return `<div class=bar><i style="width:${p}%"></i></div>`}
+function quiz(a,p){return a.map((x,i)=>{const k=p+i,v=S.ans[k];return `<div class=q><b>${i+1}. ${x.q}</b>${x.o.map((o,j)=>`<button class="opt ${v==null?'':j==x.a?'ok':v==j?'bad':''}" ${v==null?'':'disabled'} onclick="ans('${k}',${j})">${o}</button>`).join('')}<p class=fb>${v==null?'':(v==x.a?'✅ Correct. ':'❌ Not quite. ')+x.e}</p></div>`}).join('')+`<p class=score>Score: ${a.filter((x,i)=>S.ans[p+i]===x.a).length}/${a.length}</p>`}
+function ans(k,j){S.ans[k]=j;show(cur,1)}
+function tick(k){S.chk[k]=!S.chk[k];upd()}
+function ck(k,t){return `<label class=ck><input type=checkbox ${S.chk[k]?'checked':''} onchange="tick('${k}')"> <span>${t}</span></label>`}
+function upd(){$('#tp').textContent='Overall '+all()+'%';document.querySelectorAll('[data-p]').forEach(e=>e.innerHTML=bar(pct(+e.dataset.p)))}
+function gotQ(n){const a=M[n].Q;return a.filter((x,i)=>S.ans['q'+(n+1)+'-'+i]===x.a).length+'/'+a.length}
+function refl(k,q){return `<p><b>${q}</b></p><textarea oninput="S.ref['${k}']=this.value" placeholder="Type your answer…">${S.ref[k]||''}</textarea>`}
+const WV=(c,h)=>{let d='';for(let x=0;x<300;x+=4){const a=h(x);d+=`<line x1="${x+5}" x2="${x+5}" y1="${50-a}" y2="${50+a}" stroke="${c}" stroke-width="3"/>`}return `<svg class=wv viewBox="0 0 310 100">${d}</svg>`};
+function modPage(i){const m=M[i],n=i+1;
+let h=`<h1>Lesson ${n}: ${m.n}</h1><div data-p=${i}></div>
+<details open><summary>Learning Objectives</summary><ul>${m.obj.map(o=>`<li>${o}</li>`).join('')}</ul></details>
+<details open><summary>Learn</summary>${m.L.map((l,j)=>`<h3>${l[0]}</h3><p>${l[1]}</p>${ck('l'+n+'-'+j,'Mark as read')}`).join('')}</details>
+<details open><summary>📒 Notes: Step-by-step in Audacity 4.0</summary>${m.N.map(s=>`<h3>${s[0]}</h3><ol>${s[1].map(x=>`<li>${x}</li>`).join('')}</ol>`).join('')}${T(NT)}</details>`;
+if(i==2)h+=`<details open><summary>Observe: before and after</summary><p>Before: uneven volume. After: normalised with a fade out.</p>${WV('#e8590c',x=>6+((x*7)%38)*(x<150?.4:1))}${WV('#4ade80',x=>(14+((x*7)%12))*(x>250?(300-x)/50:1))}</details>
+<details open><summary>Try It: Which effect or tool should I use?</summary>${quiz(SC,'t')}</details>`;
+h+=`<details open><summary>Exercise: ${m.lab[0]} (${m.lab[1]})</summary>${m.lab.slice(2).map((t,j)=>ck('e'+n+'-'+j,t)).join('')}</details>`;
+if(m.ch)h+=`<details><summary>Challenge</summary><p>${m.ch}</p></details>`;
+h+=`<details open><summary>Quiz</summary>${quiz(m.Q,'q'+n+'-')}</details><details open><summary>Reflection</summary>${m.ref.map((q,j)=>refl('r'+n+j,q)).join('')}</details>`;return h}
+function home(){return `<h1>Introduction to Audio Editing with Audacity 4.0</h1><p>In this 2-hour lab you will edit, cut, trim and improve an existing recording, add effects, and create a new audio file: a Campus Radio Promo.</p><button class=btn onclick="show(1)">Start Learning</button>
+<div class=grid>${M.map((m,i)=>`<div class=card><h3>${m.icon} Lesson ${i+1}</h3><p>${m.n}</p><div data-p=${i}></div><p>Quiz: ${gotQ(i)}</p><button class=btn onclick="show(${i+1})">Open</button></div>`).join('')}</div>
+<h2>Achievements</h2><div class=grid>${M.map((m,i)=>`<div class="badge card ${pct(i)==100?'got':''}"><div>${m.icon}</div>${m.badge}</div>`).join('')}<div class="badge card ${projDone()?'got':''}"><div>🚀</div>Audio Producer</div></div>
+<details><summary>2-hour lab structure</summary>${SES.map(s=>`<p><b>${s[0]} min</b> — ${s[1]}</p>`).join('')}</details>
+<details><summary>What is new in Audacity 4.0?</summary><p>A new interface with Modern, Classic and Music workspaces, a home screen, the .aup4 project format, a one-click Split tool and an improved envelope tool. Some Audacity 3 features, such as MIDI tracks, the Mixer and Macro Manager, are not yet included.</p></details>`}
+function qz(){return M.map((m,i)=>`<h2>Lesson ${i+1} quiz</h2><div class=card>${quiz(m.Q,'q'+(i+1)+'-')}</div>`).join('')}
+function fin(){return `<h1>Final Project: Campus Radio Promo</h1><div class=card><b>Brief:</b> 30–60 second promo for a university event. <b>Needs:</b> voice-over, music track, trimmed edits, normalised volume, fade out. <b>Submit:</b> .aup4 project, MP3/WAV, and 2–3 sentences about your choices.</div>
+<h2>Self-evaluation checklist</h2><div class=card>${FQ.map((q,i)=>ck('p-'+i,q)).join('')}<p class=score>${FQ.filter((_,i)=>S.chk['p-'+i]).length}/${FQ.length} ${projDone()?'🚀 Project complete!':''}</p></div>
+<h2>Rubric (tap a criterion)</h2><div class=card>${RB.map((r,i)=>`<button class=opt onclick="S.rub=${i};show(6,1)">${r[0]} — ${r[1]}%</button>${S.rub==i?`<p class=fb>${r[2]}</p>`:''}`).join('')}</div>`}
+function show(p,keep){cur=p;const y=scrollY;$('#nav').innerHTML=PG.map((n,i)=>`<button class="${i==p?'on':''}" onclick="show(${i})">${n}</button>`).join('');
+$('#app').innerHTML=[home,()=>modPage(0),()=>modPage(1),()=>modPage(2),()=>modPage(3),qz,fin][p]();upd();scrollTo(0,keep?y:0)}
+show(0);
+</script></body></html>
