@@ -1,0 +1,136 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Video Editing with CapCut Desktop</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F1F4F6;--card:#fff;--ink:#14212b;--mut:#566672;--acc:#0A9396;--hot:#E4572E;--line:#dbe3e8;--ok:#dff4ef;--bad:#fde6e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0f161b;--card:#18222a;--ink:#e6edf1;--mut:#9fb0ba;--line:#2a3944;--ok:#103a38;--bad:#40201a}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.2;margin:.2em 0 .5em}
+header{background:#14212b;color:#fff;padding:10px 16px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+header b{font-family:'Space Grotesk',sans-serif}
+nav{display:flex;gap:6px;overflow-x:auto;padding-top:6px}
+nav button{background:none;border:1px solid #ffffff44;color:#fff;border-radius:999px;padding:5px 13px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--acc);border-color:var(--acc)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);transition:width .4s}
+main{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:4px 14px}
+summary{cursor:pointer;font-weight:700;padding:8px 0}
+.tip,.rem,.mis{border-left:4px solid var(--acc);background:var(--ok);padding:8px 12px;border-radius:6px;margin:10px 0}
+.rem{border-color:#c98a00;background:#fff3d1;color:#3a2c00}.mis{border-color:var(--hot);background:var(--bad)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer;font-size:1rem}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt.ok{background:var(--ok);border-color:var(--acc)}.opt.bad{background:var(--bad);border-color:var(--hot)}
+.q{border-bottom:1px solid var(--line);padding:8px 0}.fb{margin:4px 0;color:var(--mut)}.score{font-weight:700}
+label.ck{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}
+textarea,input[type=text]{width:100%;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}textarea{min-height:80px}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--line);padding:5px;text-align:left}.tbl{overflow-x:auto}.tbl input{min-width:110px;padding:5px}
+.badge{text-align:center;opacity:.35}.badge.got{opacity:1}.badge div{font-size:2rem}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+</style></head><body>
+<header><b>🎬 Video Editing with CapCut Desktop</b> <span id="tp" style="float:right;font-size:.85rem"></span><nav id="nav"></nav></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s);let cur=0,S={chk:{},ans:{},ref:{},rub:-1,theme:'',sb:[{s:'Hook',v:'',t:'',d:'5'},{s:'Problem',v:'',t:'',d:'20'},{s:'Solution',v:'',t:'',d:'40'},{s:'Call-to-action',v:'',t:'',d:'10'}]};
+const PG=['Home','Lab 1','Lab 2','Lab 3','Quiz','Pitch Project'];
+const T=a=>`<div class=tip>💡 <b>TIP</b><br>${a}</div>`,R=a=>`<div class=rem>📌 <b>REMEMBER</b><br>${a}</div>`,X=a=>`<div class=mis>⚠️ <b>COMMON MISTAKE</b><br>${a}</div>`;
+const NT='CapCut changes its interface often, so button names and positions may differ. On the free version, some effects, fonts and AI tools show a Pro icon. Avoid them, or they may block a clean export.';
+const M=[
+{n:'Know CapCut and Basic Editing',icon:'🎞️',badge:'Video Starter',obj:['Explain resolution, aspect ratio and frame rate','Identify the CapCut interface areas','Import, split, trim, reorder and export clips','Plan a short edit'],
+L:[['Video basics','<b>Resolution</b> is the picture size (1080p = 1920×1080). <b>Aspect ratio</b>: 16:9 for landscape screens, 9:16 for phones. <b>Frame rate</b> (e.g. 30 fps) is frames per second. A video is clips arranged on a <b>timeline</b>.'+T('Use 16:9 for presentations and pitches.')],
+['The CapCut interface','Main areas: <b>media panel</b> (imports, text, audio, effects), <b>player</b> (preview), <b>properties panel</b> (settings for the selected item) and <b>timeline</b> (clips and tracks). The free version exports up to 1080p.'+X('Dragging a Pro-marked effect into the project. Export may be blocked.')],
+['Editing rules','Cut on action, keep clips short (2–5 seconds), keep one idea per shot, and have a clear start and end.'+R('Only use footage you have permission to use.')]],
+N:[['A. Start a project',['Open CapCut Desktop and click New project.','Check the ratio in the player (set 16:9 for landscape).','Save the project name, e.g. Lab1_YourName.']],
+['B. Import and arrange',['Click Import in the media panel and select the sample clips.','Drag clips to the main track on the timeline.','Press Space to play and stop.','Use the zoom slider to see more or less of the timeline.']],
+['C. Split, trim and delete',['Move the playhead to the cut point.','Click the Split button (or press Ctrl+B).','Select the unwanted part and press Delete.','Drag a clip edge to trim it shorter.','Drag clips left or right to reorder them.']],
+['D. Speed and volume',['Select a clip and open the Speed tab in the properties panel.','Set a speed, e.g. 1.5x, and listen.','Open the Basic or Audio tab and adjust volume.']],
+['E. Export the video',['Click Export at the top right.','Name the file, choose a folder, set resolution to 1080p and frame rate 30 fps.','Click Export and wait until it finishes.','Play the file in a media player to check.']]],
+lab:['Lab 1 — First Edit','60 min of tasks',['Create a new project','Import at least four clips','Split and trim the clips','Delete unwanted parts','Reorder the clips','Change speed on one clip','Export at 1080p']],
+ch:'<b>Mini Challenge:</b> Turn the provided footage into a tight 30-second clip with a clear beginning, middle and end.',
+Q:[{q:'Which ratio suits a presentation video?',o:['16:9','9:16','1:1'],a:0,e:'16:9 fits landscape screens.'},{q:'True or false: Split cuts a clip into two parts.',o:['True','False'],a:0,e:'Then each part can be moved or deleted.'},{q:'Where do you change the selected clip’s settings?',o:['Properties panel','Media panel','Player'],a:0,e:'The properties panel shows settings for the selected item.'},{q:'What is 30 fps?',o:['Frames per second','File size','Sound level'],a:0,e:'It is the number of frames shown each second.'}],
+ref:['Which editing tool did you find most useful?','How did you decide where to cut?']},
+{n:'Text, Audio, Effects and Polish',icon:'✨',badge:'Video Editor',obj:['Add and style titles and captions','Add music and balance audio','Use transitions and filters sparingly','Use keyframes for simple motion'],
+L:[['Text and captions','Use a clear title, a smaller subtitle and short captions. Keep strong contrast and readable sizes. Do not use many fonts.'+T('Keep captions to one or two lines.')],
+['Audio and effects','Put music below the voice. Add fade in and fade out. Use one transition style throughout. A filter or colour adjustment should help the mood.'+R('Effects should support the message, not distract from it.')],
+['Choose the right tool','Fix problems first (cut, volume), then add style (text, effects).']],
+N:[['A. Add a title',['Open the Text tab in the media panel.','Click Default text, or a free style without a Pro icon.','Type your title in the properties panel.','Choose a font, size and colour, then drag the text on the player.','Drag the end of the text clip on the timeline to set how long it shows.']],
+['B. Add captions',['Add short text clips for key points, or use auto captions if available on your account.','Edit the wording and check spelling.','Keep captions inside the safe area of the frame.']],
+['C. Add music and voice',['Open the Audio tab and pick a free track (no Pro icon), or import your own permitted file.','Drag it to an audio track below the video.','Lower the music volume so speech is clear.','Select the audio clip and set a fade in and fade out.']],
+['D. Transitions, filters and adjustment',['Open Transitions and drag one onto the cut between two clips.','Open Filters and apply a subtle one. Lower its strength.','Use Adjustment to change brightness, contrast and saturation.']],
+['E. Keyframes (simple zoom)',['Select a clip and move the playhead to the start.','Click the keyframe diamond for Scale.','Move the playhead forward and increase the scale.','Play to check the slow zoom.']]],
+lab:['Lab 2 — Polish Your Video','45 min of tasks',['Add a title','Add a subtitle or caption','Add background music','Lower the music below the voice','Add one transition style','Apply one filter or colour adjustment','Add a simple keyframe zoom','Export a 45–60 second video']],
+ch:'<b>Challenge:</b> Make a 45–60 second promo for a campus event with title, captions, music and consistent style.',
+Q:[{q:'Music should be…',o:['Quieter than the voice','Louder than the voice','Off'],a:0,e:'The message should be heard clearly.'},{q:'True or false: Use a different transition between every clip.',o:['True','False'],a:1,e:'A consistent style looks more professional.'},{q:'A tool marked Pro on the free version may…',o:['Block a clean export','Improve export','Add 4K'],a:0,e:'Avoid Pro-marked items.'},{q:'A keyframe is used to…',o:['Change a value over time','Export','Import'],a:0,e:'Keyframes create motion such as zoom.'}],
+ref:['Which effect improved your video the most?','Where did you decide not to use an effect, and why?']},
+{n:'Group Pitch Project',icon:'🎤',badge:'Pitch Producer',obj:['Plan a pitch with a storyboard and script','Work in a group with defined roles','Edit and export a 2–3 minute pitch video','Review another group’s work'],
+L:[['Pitch structure','<b>Hook</b> (5–10 s), <b>Problem</b>, <b>Solution</b>, <b>How it works or demo</b>, <b>Target users</b>, <b>Call-to-action</b>. A good pitch is clear, short and memorable.'+T('Write the message in one sentence before you edit.')],
+['Teamwork','Roles: <b>Project lead</b> (schedule), <b>Scriptwriter/presenter</b>, <b>Editor</b>, <b>Audio and graphics</b>. Every member records their contribution.'+X('One person doing all the editing. Share tasks and files early.')],
+['Responsible use','Use permitted music and images, get consent when filming people, verify facts, and acknowledge AI-generated content.']],
+N:[['A. Plan (20 min)',['Open the Pitch Project tab and enter the theme set by your instructor.','Fill in the storyboard: shot, visual, voice or text, duration.','Assign roles and list the assets you need.']],
+['B. Produce (60 min)',['Create one CapCut project and save it as Group_Pitch_TeamName.','Import clips and images into the media panel.','Edit the main track first following the storyboard.','Add titles, captions, music and voice-over.','Save often and export drafts.']],
+['C. Review (25 min)',['Play your draft for another group.','Fill in the peer review form.','Fix at least two issues from the feedback.']],
+['D. Export and submit (15 min)',['Export as MP4 at 1080p, 30 fps.','Name it Pitch_TeamName.mp4.','Submit the video and your short group explanation.']]],
+lab:['Lab 3 — Pitch Production','120-minute lab',['Choose roles','Complete the storyboard','Collect permitted assets','Edit the main sequence','Add titles and captions','Add music and balance volume','Complete peer review','Export 2–3 minute MP4']],
+ch:'<b>Group challenge:</b> Produce a 2–3 minute video pitch that follows the theme announced by your instructor.',
+Q:[{q:'Which comes first in a pitch?',o:['Hook','Credits','Long intro'],a:0,e:'A hook gets attention.'},{q:'Best way to avoid unfair workload?',o:['Assign roles','One person edits all','Skip planning'],a:0,e:'Roles share the work.'},{q:'True or false: Check music permission before use.',o:['True','False'],a:0,e:'Use licensed or permitted audio.'},{q:'Pitch length for this lab?',o:['2–3 minutes','30 minutes','10 seconds'],a:0,e:'Short and focused.'}],
+ref:['What was your role, and what did you contribute?','What would you improve with more time?']}];
+const SC=[['A clip has dead time at the start.',['Split and delete it','Add a filter','Add music','Export'],0,'Split and delete the unwanted part.'],['The speaker is hard to hear over music.',['Lower the music volume','Add transition','Increase speed','Add sticker'],0,'Lower the music below the voice.'],['You want a slow zoom on a photo.',['Keyframe Scale','Split','Fade','Export'],0,'Keyframes animate values.'],['The video ends abruptly.',['Fade out audio and video','Add many stickers','Speed up','Delete'],0,'A fade gives a smooth finish.'],['An effect shows a Pro icon.',['Choose a free alternative','Use it anyway','Export 4K','Ignore'],0,'Free alternatives export cleanly.'],['Text is hard to read on a bright clip.',['Increase contrast or add a background','Use a thinner font','Make it smaller','Add many fonts'],0,'Contrast improves readability.']].map(s=>({q:s[0],o:s[1],a:0,e:s[3]}));
+const FQ=['Is the message clear in one sentence?','Does it have a hook, problem, solution and call-to-action?','Is the length 2–3 minutes?','Is the audio clear and balanced?','Are titles and captions readable?','Is the style consistent?','Are all assets permitted and acknowledged?','Did every member contribute?','Is the MP4 exported at 1080p with no Pro watermark?'];
+const RB=[['Idea and message clarity',20,'The idea is original, relevant to the theme and easy to understand.'],['Story structure and pacing',15,'Clear hook, flow and ending, with good timing.'],['Video editing quality',20,'Clean cuts, trimming and transitions.'],['Audio and text quality',15,'Clear voice, balanced music, readable text.'],['Visual design and consistency',10,'Consistent colours, fonts and style.'],['Teamwork and contribution',10,'Shared roles and recorded contributions.'],['Responsible use of assets and AI',5,'Permitted assets and AI content acknowledged.'],['Technical export',5,'Correct format, name and quality.']];
+const SES=[['0–10','Introduction / objectives'],['10–25','Instructor demonstration'],['25–50','Guided practice'],['50–80','Individual or group exercise'],['80–105','Mini challenge'],['105–115','Quiz'],['115–120','Save, submit, reflect']];
+function cnt(p){return Object.keys(S.chk).filter(k=>S.chk[k]&&k.startsWith(p)).length+Object.keys(S.ans).filter(k=>k.startsWith(p)).length}
+function pct(i){const m=M[i],n=i+1,t=m.L.length+m.lab.length-2+m.Q.length;return Math.min(100,Math.round((cnt('l'+n+'-')+cnt('e'+n+'-')+cnt('q'+n+'-'))/t*100))}
+function projDone(){return FQ.every((_,i)=>S.chk['p-'+i])}
+function all(){return Math.round(([0,1,2].reduce((a,i)=>a+pct(i),0)+(projDone()?100:0))/4)}
+function bar(p){return `<div class=bar><i style="width:${p}%"></i></div>`}
+function quiz(a,p){return a.map((x,i)=>{const k=p+i,v=S.ans[k];return `<div class=q><b>${i+1}. ${x.q}</b>${x.o.map((o,j)=>`<button class="opt ${v==null?'':j==x.a?'ok':v==j?'bad':''}" ${v==null?'':'disabled'} onclick="ans('${k}',${j})">${o}</button>`).join('')}<p class=fb>${v==null?'':(v==x.a?'✅ Correct. ':'❌ Not quite. ')+x.e}</p></div>`}).join('')+`<p class=score>Score: ${a.filter((x,i)=>S.ans[p+i]===x.a).length}/${a.length}</p>`}
+function ans(k,j){S.ans[k]=j;show(cur,1)}
+function tick(k){S.chk[k]=!S.chk[k];upd()}
+function ck(k,t){return `<label class=ck><input type=checkbox ${S.chk[k]?'checked':''} onchange="tick('${k}')"> <span>${t}</span></label>`}
+function upd(){$('#tp').textContent='Overall '+all()+'%';document.querySelectorAll('[data-p]').forEach(e=>e.innerHTML=bar(pct(+e.dataset.p)))}
+function gotQ(n){const a=M[n].Q;return a.filter((x,i)=>S.ans['q'+(n+1)+'-'+i]===x.a).length+'/'+a.length}
+function refl(k,q){return `<p><b>${q}</b></p><textarea oninput="S.ref['${k}']=this.value" placeholder="Type your answer…">${S.ref[k]||''}</textarea>`}
+function modPage(i){const m=M[i],n=i+1;
+let h=`<h1>Lab ${n}: ${m.n}</h1><div data-p=${i}></div>
+<details open><summary>Learning Objectives</summary><ul>${m.obj.map(o=>`<li>${o}</li>`).join('')}</ul></details>
+<details open><summary>Learn</summary>${m.L.map((l,j)=>`<h3>${l[0]}</h3><p>${l[1]}</p>${ck('l'+n+'-'+j,'Mark as read')}`).join('')}</details>
+<details open><summary>📒 Notes: Step-by-step in CapCut Desktop</summary>${m.N.map(s=>`<h3>${s[0]}</h3><ol>${s[1].map(x=>`<li>${x}</li>`).join('')}</ol>`).join('')}${T(NT)}</details>`;
+if(i==1)h+=`<details open><summary>Try It: Which tool should I use?</summary>${quiz(SC,'t')}</details>`;
+h+=`<details open><summary>Exercise: ${m.lab[0]} (${m.lab[1]})</summary>${m.lab.slice(2).map((t,j)=>ck('e'+n+'-'+j,t)).join('')}${i==2?'<p><button class=btn onclick="show(5)">Open the Pitch Project tools</button></p>':''}</details>`;
+if(m.ch)h+=`<details><summary>Challenge</summary><p>${m.ch}</p></details>`;
+h+=`<details open><summary>Quiz</summary>${quiz(m.Q,'q'+n+'-')}</details><details open><summary>Reflection</summary>${m.ref.map((q,j)=>refl('r'+n+j,q)).join('')}</details>`;return h}
+function home(){return `<h1>Video Editing with CapCut Desktop</h1><p>Three 2-hour labs take you from basic editing to polished video and a group video pitch.</p><button class=btn onclick="show(1)">Start Learning</button>
+<div class=grid>${M.map((m,i)=>`<div class=card><h3>${m.icon} Lab ${i+1}</h3><p>${m.n}</p><div data-p=${i}></div><p>Quiz: ${gotQ(i)}</p><button class=btn onclick="show(${i+1})">Open</button></div>`).join('')}</div>
+<h2>Achievements</h2><div class=grid>${M.map((m,i)=>`<div class="badge card ${pct(i)==100?'got':''}"><div>${m.icon}</div>${m.badge}</div>`).join('')}<div class="badge card ${projDone()?'got':''}"><div>🚀</div>Pitch Complete</div></div>
+<details><summary>2-hour lab structure</summary>${SES.map(s=>`<p><b>${s[0]} min</b> — ${s[1]}</p>`).join('')}</details>
+<details><summary>Using the free version</summary><p>Look for Pro icons on effects, fonts and AI tools. Choose items without them so you can export a clean 1080p video.</p></details>`}
+function qz(){return M.map((m,i)=>`<h2>Lab ${i+1} quiz</h2><div class=card>${quiz(m.Q,'q'+(i+1)+'-')}</div>`).join('')}
+const SBTIPS=['Start with one sentence: who is it for, what problem does it solve, and why is your idea better?','Plan the ending first: what should the viewer do or remember (call-to-action)?','One idea per shot. If a shot has two ideas, split it into two.','Write short voice lines (about 2 words per second is a comfortable pace).','Describe each shot in simple words: what we see, what we hear, and how long it lasts.','Mix shot types: wide (context), medium (people), close-up (detail or screen).','Keep the hook within the first 5–10 seconds.','Match the total time to your target: 2–3 minutes (120–180 seconds).','Use simple sketches or stick figures. Drawing quality does not matter.','List the assets you need next to each shot: footage, image, logo, music, screen recording.','Read the storyboard aloud with a timer, then cut anything that is slow or unclear.','Check that every shot supports the main message.'];
+const TIMES=[['Hook','5–10 s','A question, surprising fact or short scene'],['Problem','20–30 s','Who has the problem and why it matters'],['Solution','40–60 s','Your idea and what makes it different'],['Features or demo','30–40 s','Show how it works with screen recording or visuals'],['Users and benefits','10–15 s','Who benefits and how'],['Call-to-action','10 s','What the viewer should do next, plus name and logo']];
+const SAMPLE=[['1','Close-up of a student looking stressed at a messy desk','“Ever lose track of your deadlines?”','6'],['2','Montage: phone alerts, missed class','“Students miss tasks every week.”','15'],['3','App logo and main screen','“Meet DeadlineBuddy, the simple planner for students.”','25'],['4','Screen recording of adding a task','“Add tasks in seconds and get reminders.”','30'],['5','Group of students smiling','“Built for students, by students.”','12'],['6','Logo and tagline on a bright background','“Download it today.”','10']];
+const BUILD=[['Before you film or edit',['Read the theme and decide on your idea together.','Write the one-sentence message of the pitch.','Decide the target audience.','Assign roles: project lead, scriptwriter/presenter, editor, audio and graphics.']],
+['Write the script',['Write the voice-over following Hook → Problem → Solution → Demo → Users → Call-to-action.','Keep it to about 300–400 words for 2–3 minutes.','Read it aloud with a timer and trim it.']],
+['Draw and fill the storyboard',['Complete the storyboard builder below (shot, visual, voice/text, seconds).','Check that the total time is 120–180 seconds.','List the assets for each shot.']],
+['Collect assets',['Film or record the footage and the voice-over.','Prepare images, logo and screen recordings.','Choose permitted music and write down the source.','Create one shared folder and name files clearly, e.g. shot03_demo.mp4.']],
+['Edit in CapCut (one project)',['Create a 16:9 project and save it as Group_Pitch_TeamName.','Place the voice-over first, then add the visuals above it.','Trim to match the storyboard timing.','Add titles, captions and a consistent style.','Add music at a low volume and fades at the start and end.']],
+['Review and improve',['Play the draft for another group.','Complete the peer review form.','Fix at least two issues. Check audio clarity and readable text.']],
+['Export and submit',['Export as MP4 at 1080p, 30 fps, and check the whole video plays.','Do not use Pro-marked effects that block export.','Submit the MP4 and a short group explanation including each person’s contribution.']]];
+function guide(){return `<h2>How to develop a good storyboard</h2><div class=card><ol>${SBTIPS.map(t=>`<li>${t}</li>`).join('')}</ol>${T('A good storyboard saves editing time. Most problems in a pitch can be fixed before you open CapCut.')}</div>
+<h3>Suggested time plan for a 2–3 minute pitch</h3><div class="card tbl"><table><tr><th>Section</th><th>Time</th><th>What to include</th></tr>${TIMES.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join('')}</table></div>
+<details><summary>Example storyboard (for reference only, not your theme)</summary><div class=tbl><table><tr><th>Shot</th><th>Visual</th><th>Voice/text</th><th>Sec</th></tr>${SAMPLE.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</table></div>${R('Create your own storyboard for your own theme. Do not copy this example.')}</details>
+<h2>What your group must do to build the pitch</h2>${BUILD.map((b,i)=>`<details ${i<1?'open':''}><summary>Stage ${i+1}: ${b[0]}</summary>${b[1].map((t,j)=>ck('b-'+i+'-'+j,t)).join('')}</details>`).join('')}`}
+function sbRows(){return S.sb.map((r,i)=>`<tr><td><input type=text value="${r.s}" oninput="S.sb[${i}].s=this.value"></td><td><input type=text value="${r.v}" oninput="S.sb[${i}].v=this.value" placeholder="What we see"></td><td><input type=text value="${r.t}" oninput="S.sb[${i}].t=this.value" placeholder="What we say"></td><td><input type=text value="${r.d}" oninput="S.sb[${i}].d=this.value" style="min-width:50px"></td></tr>`).join('')}
+function addRow(){S.sb.push({s:'',v:'',t:'',d:''});show(5,1)}
+function fin(){return `<h1>Group Pitch Project</h1>
+<div class=card><b>Theme (announced by your instructor):</b><input type=text value="${S.theme}" placeholder="Type the theme here" oninput="S.theme=this.value"><p><b>Brief:</b> a 2–3 minute video pitch. <b>Submit:</b> MP4 (1080p), and a short group explanation.</p></div>
+${guide()}<h2>Storyboard builder</h2><div class="card tbl"><table><tr><th>Shot</th><th>Visual</th><th>Voice/text</th><th>Seconds</th></tr>${sbRows()}</table><p><button class=btn onclick="addRow()">+ Add shot</button></p></div>
+<h2>Group roles</h2><div class=grid>${['Project lead','Scriptwriter / presenter','Editor','Audio and graphics'].map((r,i)=>`<div class=card><b>${r}</b><input type=text placeholder="Name" value="${S.ref['role'+i]||''}" oninput="S.ref['role'+i]=this.value"></div>`).join('')}</div>
+<h2>Peer review form</h2><div class=card>${refl('pr1','What works well?')}${refl('pr2','What is one thing to improve?')}${refl('pr3','Is the message clear in one sentence?')}</div>
+<h2>Final checklist</h2><div class=card>${FQ.map((q,i)=>ck('p-'+i,q)).join('')}<p class=score>${FQ.filter((_,i)=>S.chk['p-'+i]).length}/${FQ.length} ${projDone()?'🚀 Pitch complete!':''}</p></div>
+<h2>Rubric (tap a criterion)</h2><div class=card>${RB.map((r,i)=>`<button class=opt onclick="S.rub=${i};show(5,1)">${r[0]} — ${r[1]}%</button>${S.rub==i?`<p class=fb>${r[2]}</p>`:''}`).join('')}</div>`}
+function show(p,keep){cur=p;const y=scrollY;$('#nav').innerHTML=PG.map((n,i)=>`<button class="${i==p?'on':''}" onclick="show(${i})">${n}</button>`).join('');
+$('#app').innerHTML=[home,()=>modPage(0),()=>modPage(1),()=>modPage(2),qz,fin][p]();upd();scrollTo(0,keep?y:0)}
+show(0);
+</script></body></html>
