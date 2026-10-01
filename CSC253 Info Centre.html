@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CSC253 Info Centre – Interactive Multimedia</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0b1f3a;--navy2:#132d54;--blue:#2f6bff;--cy:#22d3ee;--bg:#f3f6fb;--card:#fff;--ink:#14213d;--mut:#5b6b85;--line:#dbe3ef;
+--learn:#2f6bff;--asg:#e0457b;--test:#e69a0b;--grp:#12a37f;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+:root:not([data-theme=light]){color-scheme:light}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:calc(72px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,Segoe UI,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',Inter,system-ui,sans-serif;line-height:1.2;margin:0 0 .4em}
+button{font:inherit;cursor:pointer}a{color:var(--blue)}
+:focus-visible{outline:3px solid var(--cy);outline-offset:2px}
+.wrap{max-width:1140px;margin:0 auto;padding:0 20px}section{padding:64px 0}
+.sub{color:var(--mut);max-width:640px;margin:0 0 28px}
+/* nav */
+nav{position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;padding-top:env(safe-area-inset-top,0px)}
+nav .wrap{display:flex;align-items:center;gap:18px;height:60px}
+nav b{font-family:'Space Grotesk',sans-serif;font-size:1.15rem;margin-right:auto}
+nav a{color:#c9d6ee;text-decoration:none;font-size:.9rem;padding:6px 4px}nav a:hover{color:#fff}
+#burger{display:none;background:none;border:0;color:#fff;font-size:1.6rem}
+@media(max-width:900px){#burger{display:block}#links{display:none;position:absolute;top:100%;left:0;right:0;background:var(--navy);flex-direction:column;padding:8px 20px 16px}#links.open{display:flex}}
+#links{display:flex;gap:14px}
+/* hero */
+.hero{background:radial-gradient(1200px 500px at 85% 0,#1b4fa8 0,transparent 60%),var(--navy);color:#fff;padding:72px 0 56px;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:40px;align-items:center}
+@media(max-width:860px){.hero .wrap{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);letter-spacing:-.02em}
+.hero h1 span{display:block;font-size:.5em;color:var(--cy);font-weight:500}
+.hero p{color:#c9d6ee;font-size:1.1rem;max-width:520px}
+.stats{display:flex;flex-wrap:wrap;gap:8px;margin:20px 0 28px}
+.stats span{background:#ffffff14;border:1px solid #ffffff26;border-radius:99px;padding:6px 14px;font-size:.9rem}
+.btn{background:var(--cy);color:var(--navy);border:0;border-radius:10px;padding:14px 26px;font-weight:600;font-size:1.05rem;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn.s{padding:8px 14px;font-size:.9rem;background:var(--blue);color:#fff;border-radius:8px}
+.btn.o{background:transparent;color:var(--blue);border:1.5px solid var(--blue)}
+/* studio visual */
+.studio{background:#0a1730;border:1px solid #ffffff22;border-radius:16px;padding:14px;box-shadow:0 20px 50px #0008}
+.frame{aspect-ratio:16/9;border-radius:10px;background:linear-gradient(135deg,#1b4fa8,#0e8fb0 60%,#0d2a52);position:relative;display:grid;place-items:center}
+.play{width:64px;height:64px;border-radius:50%;background:#fff;display:grid;place-items:center;color:var(--navy);font-size:1.6rem;padding-left:5px}
+.frame small{position:absolute;left:12px;top:10px;font-family:ui-monospace,monospace;font-size:.75rem;color:#dff}
+.wave{display:flex;align-items:center;gap:3px;height:44px;margin:12px 0 8px}
+.wave i{flex:1;background:var(--cy);border-radius:3px;height:var(--h);opacity:.85;animation:w 1.6s ease-in-out infinite;animation-delay:calc(var(--d)*1ms)}
+@keyframes w{50%{transform:scaleY(.45)}}
+.code{font:.78rem/1.5 ui-monospace,monospace;color:#8fb4ff;background:#ffffff0d;border-radius:8px;padding:8px 10px}
+@media(prefers-reduced-motion:reduce){.wave i{animation:none}*{scroll-behavior:auto!important;transition:none!important}}
+/* search */
+.search{margin-top:-28px;position:relative;z-index:5}
+.search input{width:100%;padding:16px 20px;border-radius:14px;border:1px solid var(--line);font:inherit;box-shadow:0 8px 24px #0b1f3a22}
+#results{background:var(--card);border-radius:12px;margin-top:8px;box-shadow:0 8px 24px #0b1f3a1a}
+#results button{display:flex;gap:10px;width:100%;text-align:left;border:0;background:none;padding:10px 16px;border-bottom:1px solid var(--line)}
+#results button:hover{background:var(--bg)}#results em{font-style:normal;color:var(--mut);font-size:.85rem;min-width:88px}
+/* cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px}
+.card.click{text-align:left;width:100%;transition:border-color .15s,transform .15s}.card.click:hover{border-color:var(--blue);transform:translateY(-2px)}
+.ic{font-size:1.6rem}.tag{display:inline-block;font-size:.78rem;border-radius:99px;padding:2px 10px;background:#e8efff;color:#1f4fc4;margin:2px 4px 2px 0}
+.tag.t{background:#fff1d6;color:#8a5a00}.tag.g{background:#dcf5ec;color:#0b6b52}.tag.a{background:#fde3ec;color:#a3204f}
+.more{display:none;margin-top:10px;font-size:.92rem;color:var(--mut)}.card.open .more{display:block}
+.dark{background:var(--navy);color:#fff}.dark .sub{color:#b9c8e2}
+/* timeline */
+.tl{display:flex;gap:6px;overflow-x:auto;padding:6px 2px 14px}
+.tl button{flex:0 0 auto;min-width:54px;border:2px solid transparent;border-radius:10px;padding:8px 6px;background:#fff;font-weight:600;border-bottom:5px solid var(--c)}
+.tl button.on{background:var(--c);color:#fff}
+.legend{display:flex;flex-wrap:wrap;gap:14px;font-size:.85rem;color:var(--mut);margin:6px 0 16px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;background:var(--c);margin-right:6px}
+.panel{background:#fff;border:1px solid var(--line);border-left:6px solid var(--c);border-radius:14px;padding:24px}
+.panel h3{font-size:1.5rem}.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}@media(max-width:700px){.two{grid-template-columns:1fr}}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden;margin:10px 0}.bar b{display:block;height:100%;background:var(--cy);transition:width .3s}
+.nav2{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:16px}
+.note{background:#fff8e6;border:1px solid #f3dca0;border-radius:10px;padding:10px 14px;font-size:.9rem;margin-top:12px}
+.tbd{color:#8a5a00}
+/* assessment */
+.ass{display:grid;grid-template-columns:280px 1fr;gap:28px;align-items:start}@media(max-width:800px){.ass{grid-template-columns:1fr}}
+.donut{width:240px;height:240px;border-radius:50%;margin:auto;background:conic-gradient(var(--test) 0 30%,var(--asg) 30% 50%,var(--grp) 50% 70%,#7c5cff 70% 100%);display:grid;place-items:center}
+.donut div{width:150px;height:150px;border-radius:50%;background:var(--bg);display:grid;place-items:center;text-align:center;font-size:.85rem;line-height:1.3}
+.alist button{display:block;width:100%;text-align:left;margin-bottom:10px}
+.pb{height:8px;border-radius:9px;background:var(--c);width:var(--p);margin-top:8px}
+.alist button.on{border-color:var(--blue);box-shadow:0 0 0 3px #2f6bff22}
+/* flow */
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:14px}.flow span{background:var(--navy);color:#fff;border-radius:8px;padding:6px 12px;font-size:.88rem}.flow u{text-decoration:none;color:var(--mut)}
+/* checklist */
+.ck label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;cursor:pointer}.ck input{width:20px;height:20px;margin-top:3px;accent-color:var(--blue)}
+.ph{aspect-ratio:16/10;border-radius:10px;background:repeating-linear-gradient(45deg,#e8eef8,#e8eef8 10px,#f3f6fb 10px,#f3f6fb 20px);display:grid;place-items:center;color:var(--mut);font-size:.85rem;text-align:center;padding:8px;margin-bottom:12px}
+.rb{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+dialog{border:0;border-radius:16px;max-width:520px;width:calc(100% - 32px);padding:26px;box-shadow:0 30px 80px #0007}dialog::backdrop{background:#0b1f3a99}
+#top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:1.3rem;display:none;z-index:40}
+footer{background:var(--navy);color:#b9c8e2;padding:28px 0;text-align:center;font-size:.9rem}
+</style>
+</head>
+<body>
+<nav aria-label="Main"><div class="wrap"><b>CSC253</b><button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
+<div id="links"><a href="#overview">Overview</a><a href="#journey">Learning Journey</a><a href="#clos">CLOs</a><a href="#assessment">Assessment</a><a href="#tools">Tools</a><a href="#assignments">Assignments</a><a href="#notes">Notes</a><a href="#resources">Resources</a></div></div></nav>
+
+<header class="hero"><div class="wrap">
+<div><h1><span>CSC253</span>INTERACTIVE MULTIMEDIA</h1>
+<p>Your Interactive Guide to Learning, Creating and Commercialising Multimedia</p>
+<div class="stats"><span>17 Weeks</span><span>3 CLOs</span><span>4 Major Assessments</span><span>Multimedia Project</span><span>Practical Skills</span></div>
+<button class="btn" id="start">Start Your Learning Journey</button></div>
+<div class="studio" aria-hidden="true"><div class="frame"><small>REC ● 00:17:00</small><div class="play">▶</div></div>
+<div class="wave" id="wave"></div><div class="code">&lt;multimedia project="CSC253"&gt;<br>&nbsp;&nbsp;text + graphics + audio + video + animation<br>&lt;/multimedia&gt;</div></div>
+</div></header>
+
+<div class="search"><div class="wrap"><input id="q" type="search" placeholder="Search CSC253… (topics, tools, assessments, CLOs, notes, weeks)" aria-label="Search CSC253"><div id="results" role="list" hidden></div></div></div>
+
+<main>
+<section id="thisweek"><div class="wrap"><h2>What should I do this week?</h2><p class="sub">Pick your week for a focused checklist of topics, activities and deadlines.</p>
+<label for="wsel"><b>Select week: </b></label><select id="wsel" style="padding:8px 12px;border-radius:8px;font:inherit"></select>
+<div class="grid" id="tw" style="margin-top:18px"></div></div></section>
+
+<section id="overview" style="background:#fff"><div class="wrap"><h2>What will I learn?</h2>
+<p class="sub">CSC253 introduces interactive multimedia application development: multimedia concepts, text, graphics, audio, video, animation, project development, authoring tools, hardware and software, file formats, storage and memory management, Internet and mobile multimedia, teamwork, digital marketing, video pitching and commercialisation.</p>
+<div class="grid" id="topics"></div>
+<div class="card" style="margin-top:20px"><h3>Course information</h3><div class="two"><div><p><b>Code:</b> CSC253<br><b>Name:</b> Interactive Multimedia<br><b>Level:</b> Diploma Level 4<br><b>Duration:</b> 17 Weeks<br><b>Prerequisite:</b> No course recommendation</p></div><div><b>Teaching methodologies</b><br><span class="tag">Interactive Lecture</span><span class="tag">Discussion</span><span class="tag">Lab Work</span><span class="tag">Group Work / Project-Based Learning</span></div></div></div></div></section>
+
+<section id="journey"><div class="wrap"><h2>Your Learning Journey</h2><p class="sub">Select a week to see what it covers. Based on the official Scheme of Work.</p>
+
+<!-- LECTURER: replace the href below with your Scheme of Work PDF link
+     (Google Drive share link, or a file beside this page such as "files/scheme-of-work.pdf") -->
+<a class="btn s" style="text-decoration:none;display:inline-block;margin:0 0 18px"
+   href="https://drive.google.com/file/d/1Qp0-CCGbnl_sgKynq5EeBge7wR33ntG2/view?usp=sharing"
+   target="_blank" rel="noopener">📄 View Scheme of Work (PDF)</a>
+
+
+<div class="legend" id="legend"></div><div class="tl" id="tl" role="group" aria-label="Weeks"></div><div class="panel" id="wp" aria-live="polite"></div>
+<div class="note"><b>Semester dates:</b> Mid-Semester Break 21–27 December 2026 · Study Leave 11–17 January 2027</div></div></section>
+
+<section id="clos" class="dark"><div class="wrap"><h2>Understand your CLOs</h2><p class="sub">Select a CLO to see how it connects to topics, assessments and skills.</p>
+<div class="grid" id="clog" style="color:var(--ink)"></div><div class="card" id="clod" style="margin-top:18px;color:var(--ink)" aria-live="polite"></div></div></section>
+
+<section id="assessment"><div class="wrap"><h2>How am I assessed?</h2><p class="sub">Continuous Assessment 70% + Final Assessment 30%. Select an assessment for details.</p>
+<div class="ass"><div><div class="donut"><div><b>70% CA<br>30% Final</b></div></div></div><div><div class="alist" id="al"></div><div class="card" id="ad" aria-live="polite"></div></div></div></div></section>
+
+<section id="tools" style="background:#fff"><div class="wrap"><h2>Tools you will use</h2>
+<div class="note" style="margin:0 0 20px"><b>Recommended / exemplar tools only.</b> These are not official prescribed tools unless your lecturer confirms.</div>
+<div class="rb" id="tf" style="margin:0 0 16px"></div><div class="grid" id="tg"></div></div></section>
+
+<section id="assignments"><div class="wrap"><h2>CSC253 Assessment &amp; Assignment Guide</h2><p class="sub">Suggested workflows only. Official submission requirements, formats and rubrics will be announced by your lecturer.</p><div class="grid" id="ag"></div></div></section>
+
+<section id="samples" style="background:#fff"><div class="wrap"><h2>See what good multimedia work looks like</h2><p class="sub">Placeholders for now. Sample work will be provided by your lecturer.</p><div class="grid" id="sg"></div></div></section>
+
+<section id="notes"><div class="wrap"><h2>Learning resources</h2><p class="sub">Course notes per topic. Buttons marked as pending will be activated when your lecturer uploads materials.</p><div class="grid" id="ng"></div></div></section>
+
+<section id="resources" style="background:#fff"><div class="wrap"><h2>Academic resources</h2><div class="grid" id="rg"></div></div></section>
+
+<section id="progress"><div class="wrap"><h2>My CSC253 checklist</h2><div class="card ck" style="max-width:640px"><h3 id="pp">Your CSC253 Progress: 0%</h3><div class="bar"><b id="pbar" style="width:0"></b></div><div id="cl"></div><button class="btn s o" id="reset">Reset checklist</button><p class="sub" style="margin:10px 0 0;font-size:.85rem">Saved in this browser only.</p></div></div></section>
+
+<section id="lecturer" style="background:#fff">
+   <div class="wrap"><div class="card" style="max-width:520px"><h3>Course lecturer</h3>
+        <!-- LECTURER PHOTO: replace the src with your image link -->
+      <img src="https://lh3.googleusercontent.com/d/19Qs4KIf3RP6qlGGC1YlhEUsO_3u5gVz-"
+           alt="Ts. Dr. Rashidah Mokhtar"
+           style="width:140px;height:140px;object-fit:cover;border-radius:50%;display:block;margin:0 0 14px;border:3px solid var(--line)"
+           onerror="this.style.display='none'">
+
+      <p style="margin:0"><b>Ts. Dr. Rashidah Mokhtar</b><br>Office: BK79 / 0197333604<br>
+         <a href="mailto:rashi271@uitm.edu.my">rashi271@uitm.edu.my</a></p>
+<!-- LECTURER: announcements go here --><p class="tbd" style="margin:10px 0 0">Announcements: details will be announced by lecturer.</p></div></div></section>
+</main>
+<footer>CSC253 SEMESTER SEPT 2026 - FEB 2027 (20264) · Faculty of Computer and Mathematical Sciences, UiTM Cawangan Johor Kampus Segamat</footer>
+<button id="top" aria-label="Back to top">↑</button>
+<dialog id="dlg"><div id="dc"></div><div style="text-align:right;margin-top:16px"><button class="btn s" id="dx">Close</button></div></dialog>
+
+<script>
+/* =====================================================================
+   LECTURER DATA AREA — edit the objects below; the UI updates itself.
+   ===================================================================== */
+const TBD="To be provided by lecturer";
+const TYPES={learn:["Learning","var(--learn)"],asg:["Assignment","var(--asg)"],test:["Practical Test","var(--test)"],grp:["Group Project","var(--grp)"]};
+
+/* Topics. res:{notes,video,activity,download} -> paste a URL (PDF, YouTube, Drive, etc). Empty = placeholder. */
+const TOPICS=[
+{n:"Multimedia Fundamentals",ic:"🎬",wk:"Week 1",clo:"CLO1",s:"What multimedia is and where it is used.",k:["Definition","Multimedia Terminologies","Multimedia Delivery Media","Usage of Multimedia"],res:{notes: "https://drive.google.com/file/d/1Fq9RxmvvGdJEe-OZsRegNXZNOWRVgrIr/view?usp=sharing", activity: "https://drive.google.com/file/d/15If1JPml8FHIE6Pw_g9qDNFAvg3-XuCb/view?usp=sharing"}},
+{n:"Multimedia Tools",ic:"🧰",wk:"Weeks 2–3",s:"Hardware, software and people behind a project.",k:["Requirements for Multimedia Project","Hardware","Software","Peopleware","Connectivity","Stages of a Multimedia Project"],res:{notes: "https://drive.google.com/file/d/1dE1piUL0gJZ3_mWAWJDcvavv0jE4Uf5z/view?usp=sharing"}},
+{n:"Text",ic:"🔤",wk:"Week 4",s:"How text works in multimedia design.",k:["Importance of Text","Attributes of Text","Usage of Text in Multimedia","Hypertext and Hypermedia","Font Editing and Design Tools"],res:{notes: "https://drive.google.com/file/d/1R1CFefXciUkOXz6Aea1Crkl9wlErdeXE/view?usp=sharing"}},
+{n:"Graphics",ic:"🖼️",wk:"Weeks 5–6",s:"Creating and editing still images and 3D.",k:["Preparation for Creating Image","Making Still Images","3D Drawing and Rendering","Colours","Image File Formats","Image Editing and Design Tools","Graphic Designing"],res:{}},
+{n:"Sound",ic:"🎧",wk:"Week 7",s:"Digital audio, MIDI and sound editing.",k:["Introduction to Sound","Digital Audio and MIDI Audio","MIDI vs Digital Audio","Multimedia System Sounds","Audio File Formats","Adding Sound to Multimedia Project","Sound Editing Tools"],res:{}},
+{n:"Video",ic:"🎥",wk:"Weeks 8–9",s:"How video works, and how to shoot and edit it.",k:["Introduction to Video","How Video Works","Broadcast Video Standards","Analogue Video and Digital Video","Digital Video Containers","Shooting and Editing Video","Nonlinear Editing (NLE)","Video Production"],res:{}},
+{n:"Animation",ic:"✨",wk:"Week 10",s:"Principles and production of animation.",k:["Introduction to Animation","Principles of Animation","Animation by Computer","Animation File Formats","Animation Tools","Animation Production"],res:{}},
+{n:"Multimedia Authoring Tools",ic:"🧩",wk:"Weeks 11–12",s:"Combining media into an interactive project.",k:["Introduction to Multimedia Authoring Tools","Types of Authoring Tools","Features of Authoring Tools","Cross-Platform Authoring","Developing Multimedia Projects"],res:{}},
+{n:"Internet & Mobile Multimedia",ic:"📱",wk:"Week 13",s:"Multimedia on the web and mobile devices.",k:["Internet History","Internetworking","Multimedia on Web","Mobile Multimedia","Mobile Hardware"],res:{}},
+{n:"Digital Marketing",ic:"📣",wk:"Week 14",s:"Promoting multimedia products online.",k:["Techniques and Tools","Marketing Strategies through Online Platforms and Social Media","Digital Marketing Process"],res:{}}];
+
+/* Weekly scheme of work. r=[from,to], t=topic index, type=key of TYPES, a=assessment/activity text (or null) */
+const SOW=[
+{r:[1,1],t:0,type:"learn",a:null},
+{r:[2,3],t:1,type:"learn",a:null},
+{r:[4,4],t:2,type:"asg",a:"Video Pitching Assignment is released."},
+{r:[5,6],t:3,type:"grp",a:"Group Project Authoring is released."},
+{r:[7,7],t:4,type:"test",a:"Practical Test 1 – Poster (30%)"},
+{r:[8,9],t:5,type:"asg",a:"Video Pitching (20%)"},
+{r:[10,10],t:6,type:"learn",a:null},
+{r:[11,12],t:7,type:"grp",a:"Group Project – Authoring (20%)"},
+{r:[13,13],t:8,type:"learn",a:null},
+{r:[14,14],t:9,type:"test",a:"Practical Test 2 – Animation (30%)"},
+{r:[15,17],t:-1,type:"learn",a:null}];
+
+/* Assessments (official). prep = suggested preparation (not official). Add rubric links in "rubric". */
+const ASSESS=[
+{n:"Practical Test 1 – Poster",p:30,clo:"CLO1",topic:"Graphics (and Text)",when:"Week 7",cat:"Continuous Assessment",c:"var(--test)",prep:["Revisit Text and Graphics topics","Practise with an image/poster design tool","Review colours and image file formats"],rubric:""},
+{n:"Assignment – Video Pitching",p:20,clo:"CLO3",topic:"Video / Digital Marketing",when:"Released Week 4 · Video Pitching in Weeks 8–9",cat:"Continuous Assessment",c:"var(--asg)",prep:["Plan your product idea early","Practise shooting and editing short video","Review digital marketing strategies"],rubric:""},
+{n:"Group Project – Authoring",p:20,clo:"CLO2",topic:"Multimedia Authoring Tools",when:"Released Weeks 5–6 · Assessed Weeks 11–12",cat:"Continuous Assessment",c:"var(--grp)",prep:["Agree roles and a schedule with your group","Explore an authoring tool early","Combine text, graphics, audio, video and animation"],rubric:""},
+{n:"Practical Test 2 – Animation",p:30,clo:"CLO1",topic:"Animation",when:"Week 14",cat:"Final Assessment",c:"#7c5cff",prep:["Review the principles of animation","Practise a short animation in a tool","Check animation file formats"],rubric:""}];
+
+const CLOS=[
+{id:"CLO1",v:"Create",txt:"Display practical skills in using various multimedia elements for the requirements of a multimedia project (P3).",top:"Text, Graphics, Sound, Video, Animation",as:["Practical Test 1 – Poster (30%)","Practical Test 2 – Animation (30%)"],sk:["Use text, images, audio, video and animation in a project","Apply editing and design tools"]},
+{id:"CLO2",v:"Develop",txt:"Demonstrate lifelong learning skills in the development of an interactive multimedia project using current multimedia software and tools (A3).",top:"Multimedia Tools, Multimedia Authoring Tools",as:["Group Project – Authoring (20%)"],sk:["Learn new software independently","Work in a team on a project"]},
+{id:"CLO3",v:"Commercialise",txt:"Formulate entrepreneurial skills in commercialization of the interactive multimedia project (A4).",top:"Video, Digital Marketing",as:["Assignment – Video Pitching (20%)"],sk:["Pitch a multimedia product","Apply digital marketing ideas"]}];
+
+/* Tools: [name, category, purpose, difficulty, CSC253 usage, url] — recommended examples, not official. */
+const TOOLS=[
+["Adobe Photoshop","Graphic Design","Photo editing and compositing","Intermediate","Image editing for graphics topic","https://www.adobe.com/products/photoshop.html"],
+["Photopea","Graphic Design","Photo editing and compositing","Intermediate","Image editing for graphics topic","https://www.photopea.com/"],
+["Adobe Illustrator","Graphic Design","Vector illustration","Intermediate","Logos and vector artwork","https://www.adobe.com/products/illustrator.html"],
+["CapCut","Video","Simple video editing","Beginner","Video pitch editing","https://www.capcut.com"],
+["Adobe Premiere Pro","Video","Nonlinear video editing","Intermediate","Advanced video pitch editing","https://www.adobe.com/products/premiere.html"],
+["Canva Video","Video","Browser-based video editor","Beginner","Quick pitch drafts","https://www.canva.com/video-editor/"],
+["Adobe Animate","Animation","2D animation","Intermediate","Animation practical test","https://www.adobe.com/products/animate.html"],
+["Canva Animation","Animation","Animated designs","Beginner","Simple motion graphics","https://www.canva.com"],
+["Audacity","Audio","Free audio editor","Beginner","Recording and editing sound","https://www.audacityteam.org"],
+["Adobe Audition","Audio","Audio editing and mixing","Intermediate","Polished audio","https://www.adobe.com/products/audition.html"],
+["Unity","Multimedia Authoring","Interactive content engine","Advanced","Interactive project (example)","https://unity.com"],
+["Adobe Animate (authoring)","Multimedia Authoring","Interactive content authoring","Intermediate","Interactive project (example)","https://www.adobe.com/products/animate.html"],
+["Canva","Digital Marketing","Marketing visuals","Beginner","Promotional posts","https://www.canva.com"],
+["Social media platforms","Digital Marketing","Reach an audience","Beginner","Promote your pitch","https://www.youtube.com"]];
+
+/* Assignment guide. Edit steps/checks freely. link = official brief URL when available. */
+const GUIDE=[
+{n:"Video Pitching Assignment",clo:"CLO3",w:"20%",topic:"Video / Digital Marketing",why:"Pitch a multimedia product using video.",steps:["Identify multimedia product","Define target audience","Develop concept","Prepare storyboard/script","Produce video pitch","Apply digital marketing concepts","Review and refine","Submit"],link:"https://drive.google.com/file/d/1Uerj9UCaSiVRVh5eGN4P-cPw6rkHB1T0/view?usp=sharing"},
+{n:"Group Project – Authoring",clo:"CLO2",w:"20%",topic:"Multimedia Authoring Tools",why:"Build an interactive multimedia project as a team.",steps:["Form group and assign roles","Define project idea","Storyboard and plan","Collect and prepare media assets","Author in your chosen tool","Test and refine","Present/submit as announced"],link:""},
+{n:"Practical Test 1 – Poster",clo:"CLO1",w:"30%",topic:"Text, Graphics",why:"Show poster design skills using text and graphics.",steps:["Review text and graphics notes","Practise layout, colour and typography","Practise exporting image formats"],link:""},
+{n:"Practical Test 2 – Animation",clo:"CLO1",w:"30%",topic:"Animation",why:"Show animation skills.",steps:["Review principles of animation","Practise in an animation tool","Practise exporting animation formats"],link:""}];
+
+/* Samples: replace ph:true with img:"path.png" and link:"URL" to publish real examples. */
+const SAMPLES=[
+{n:"Poster Design",type:"Practical Test 1",sk:"Text, graphics, colour",img:"https://lh3.googleusercontent.com/d/1a0KB6ZtJDPuLrg5qqfB7HZvAKDoAoyt5",link:"https://drive.google.com/file/d/1a0KB6ZtJDPuLrg5qqfB7HZvAKDoAoyt5/view?usp=sharing"},
+{n:"Video Pitch",type:"Assignment",sk:"Video, storytelling, marketing",img:"https://lh3.googleusercontent.com/d/1_n9K4j1kIBBHcOBelTa7HWRVWtLVkFEi",link:"https://youtu.be/OOMngb7vvMc"},
+{n:"Animation",type:"Practical Test 2",sk:"Animation principles, tools",img:"https://lh3.googleusercontent.com/d/1Ff9BCItzwMVuBgeYjbBK4_glagvo2qjy",link:"https://drive.google.com/file/d/1JrrxxVhoZruULK9V6Qnn28GSOaDYufID/view?usp=sharing"},
+{n:"Interactive Multimedia Project",type:"Group Project",sk:"Authoring, teamwork",img:"https://lh3.googleusercontent.com/d/1M5Em_8qpLPGlknwnkgt_KrgwOnOLJUDX",link:"https://drive.google.com/file/d/15-zY_PXDqcN6OXtbTNpA-JrzLROfeFkq/view?usp=sharing"}];
+
+const REFS=[{t:"Textbook",x:"Ze-Nian Li, Mark S. Drew, Jiangchuan Liu. (2021). Fundamentals of Multimedia, 3rd Edition. Springer Nature.", link:"https://drive.google.com/file/d/1TP8eJHBJ_kCkceCd5tMfoSX3nrkOAKD8/view?usp=sharing"},
+{t:"Reference",x:"Florence Martin & Anthony Karl Betrus (2021). Digital Media for Learning."},
+{t:"Reference",x:"Richard E. Mayer (2022). Multimedia Learning."},
+{t:"Reference",x:"Sreeparna Banerjee (2019). Elements of Multimedia."},
+{t:"Reference",x:"Ivan Vidal et al. (2019). Multimedia Networking Technologies, Protocols, and Architectures."}];
+
+const CHECK=["Understand course overview","Understand CLOs","Review weekly topics","Learn multimedia tools","Complete Video Pitching Assignment","Prepare Practical Test 1","Contribute to Group Project","Learn animation","Prepare Practical Test 2","Review digital marketing","Complete semester learning activities"];
+
+/* Lab session schedule. r=[fromWeek,toWeek], n=lab focus, tool=software used. Weeks not covered here show no lab session. */
+const LAB=[
+{r:[1,1],n:"Introduction",tool:"",link:""},
+{r:[2,5],n:"Image Editing",tool:"Photopea / Photoshop",link:"https://rashidah2023.github.io/CSC253/Introduction%20to%20Image%20Editing-%20Photopea.html"},
+{r:[6,6],n:"Sound Editing",tool:"Audacity",link:""},
+{r:[8,9],n:"Video Editing",tool:"CapCut Desktop",link:""},
+{r:[10,13],n:"Animation",tool:"Adobe Animate",link:""}];
+const labFor=n=>LAB.find(l=>n>=l.r[0]&&n<=l.r[1])||null;
+
+/* =====================================================================
+   UI LOGIC — lecturers rarely need to edit below this line.
+   ===================================================================== */
+const $=s=>document.querySelector(s),H=(el,h)=>el.innerHTML=h;
+const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+const wk=n=>SOW.find(s=>n>=s.r[0]&&n<=s.r[1]);
+const wkLabel=s=>s.r[0]==s.r[1]?"Week "+s.r[0]:"Weeks "+s.r[0]+"–"+s.r[1];
+function modal(h){H($("#dc"),h);$("#dlg").showModal()}
+$("#dx").onclick=()=>$("#dlg").close();
+$("#dlg").addEventListener("click",e=>{if(e.target.id==="dlg")e.target.close()});
+const go=id=>{$("#"+id).scrollIntoView({behavior:"smooth"})};
+$("#start").onclick=()=>go("journey");
+$("#burger").onclick=e=>{const o=$("#links").classList.toggle("open");e.target.setAttribute("aria-expanded",o)};
+$("#links").onclick=()=>$("#links").classList.remove("open");
+$("#top").onclick=()=>scrollTo({top:0,behavior:"smooth"});
+addEventListener("scroll",()=>$("#top").style.display=scrollY>600?"block":"none");
+H($("#wave"),Array.from({length:40},(_,i)=>`<i style="--h:${20+Math.abs(Math.sin(i*.7))*80}%;--d:${i*40}"></i>`).join(""));
+
+/* topic cards */
+H($("#topics"),TOPICS.map((t,i)=>`<div class="card click" tabindex="0" role="button" aria-expanded="false" data-i="${i}"><div class="ic">${t.ic}</div><h3>${t.n}</h3><p style="margin:0;color:var(--mut)">${t.s}</p><div class="more"><b>${t.wk}</b> · <span class="tag">${t.clo||"CLO: to be confirmed"}</span><ul>${t.k.map(k=>`<li>${k}</li>`).join("")}</ul></div></div>`).join(""));
+document.querySelectorAll("#topics .card").forEach(c=>{const f=()=>{const o=c.classList.toggle("open");c.setAttribute("aria-expanded",o)};c.onclick=f;c.onkeydown=e=>{if(e.key=="Enter"||e.key==" "){e.preventDefault();f()}}});
+
+/* timeline + this week */
+let cur=store.get("csc253wk",1);
+H($("#legend"),Object.values(TYPES).map(t=>`<span><i style="--c:${t[1]}"></i>${t[0]}</span>`).join(""));
+H($("#tl"),Array.from({length:17},(_,i)=>{const s=wk(i+1);return `<button data-w="${i+1}" style="--c:${TYPES[s.type][1]}" aria-label="Week ${i+1}, ${TYPES[s.type][0]}">W${i+1}</button>`}).join(""));
+H($("#wsel"),Array.from({length:17},(_,i)=>`<option value="${i+1}">Week ${i+1}</option>`).join(""));
+document.querySelectorAll("#tl button").forEach(b=>b.onclick=()=>setWeek(+b.dataset.w));
+$("#wsel").onchange=e=>setWeek(+e.target.value);
+function setWeek(n){cur=Math.max(1,Math.min(17,n));store.set("csc253wk",cur);renderWeek()}
+function renderWeek(){
+ const s=wk(cur),T=s.t>=0?TOPICS[s.t]:null,ty=TYPES[s.type],c=ty[1];
+ document.querySelectorAll("#tl button").forEach(b=>{b.classList.toggle("on",+b.dataset.w===cur);if(+b.dataset.w===cur)b.scrollIntoView({inline:"center",block:"nearest"})});
+ $("#wsel").value=cur;
+ const name=T?T.n:"Semester Completion / Consolidation",
+ keys=T?T.k:[],
+ clo=s.type=="test"?"CLO1":s.type=="asg"?"CLO3":s.type=="grp"?"CLO2":"To be confirmed by lecturer",
+ lab=labFor(cur),
+ labTxt=lab?`${lab.n}${lab.tool?" — "+lab.tool:""}`:"No lab session scheduled for this week",
+ tbd=!T?`<div class="note">No detailed topic information is provided in the supplied Scheme of Work for Weeks 15–17. Details will be announced by lecturer.</div>`:"";
+ H($("#wp"),`<div style="--c:${c}" class="panel" style="border:0;padding:0"><span class="tag" style="background:${c};color:#fff">${ty[0]}</span> <span class="tag">${wkLabel(s)}</span>
+ <h3>${name}</h3><div class="bar"><b style="width:${cur/17*100}%"></b></div><small>Week ${cur} of 17</small>${tbd}
+ <div class="two" style="margin-top:12px"><div><b>Key concepts</b>${keys.length?`<ul>${keys.map(k=>`<li>${k}</li>`).join("")}</ul>`:`<p class="tbd">To be provided by lecturer</p>`}</div>
+ <div><p><b>CLO:</b> ${clo}</p><p><b>Learning activity:</b> ${T?"Interactive lecture, discussion and lab work, as scheduled by lecturer.":"Details will be announced by lecturer."}</p>
+ <p><b>Lab session:</b> ${labTxt}${lab&&lab.link?` <a class="btn s" style="text-decoration:none;display:inline-block;margin-left:8px" href="${lab.link}" target="_blank" rel="noopener">📄 Lab Material</a>`:""}</p>
+ <p><b>Assessment / activity:</b> ${s.a||"None listed in Scheme of Work"}</p>
+ <p><b>What should I be able to do?</b><br>${T?"Explain and apply the key concepts listed for this topic, and use them in practical work.":"To be provided by lecturer."}</p></div></div>
+ <div class="nav2"><button class="btn s o" ${cur==1?"disabled":""} onclick="setWeek(cur-1)">← Previous</button><button class="btn s" ${cur==17?"disabled":""} onclick="setWeek(cur+1)">Next →</button></div></div>`);
+ H($("#tw"),[["This week's focus",`Week ${cur}: ${name}`],["Key topics",keys.length?keys.join(", "):TBD],["Learning activities",T?"Interactive lecture, discussion, lab work":"Details will be announced by lecturer"],["Lab session",lab&&lab.link?`${labTxt} — <a href="${lab.link}" target="_blank" rel="noopener">Open lab material</a>`:labTxt],["Assessment / deadline",s.a||"None listed"],["Recommended action",T?`Read the ${name} notes, then try the related tool or activity.`:"Consolidate earlier topics and check lecturer announcements."],["Resources",T?`<a href="#notes" onclick="go('notes');return false">Open ${name} notes</a>`:"Details will be announced by lecturer"]].map(x=>`<div class="card"><b>${x[0]}</b><p style="margin:.3em 0 0">${x[1]}</p></div>`).join(""));
+}
+renderWeek();
+
+/* CLOs */
+H($("#clog"),CLOS.map((c,i)=>`<button class="card click" data-c="${i}"><span class="tag">${c.id}</span><h3>${c.v}</h3><p style="margin:0;color:var(--mut)">${c.txt.slice(0,70)}…</p></button>`).join(""));
+function showClo(i){const c=CLOS[i];H($("#clod"),`<h3>${c.id} – ${c.v}</h3><p>${c.txt}</p><div class="two"><div><b>Related assessment</b><ul>${c.as.map(a=>`<li>${a}</li>`).join("")}</ul><b>Related topics</b><p style="margin:0">${c.top}</p></div><div><b>Skills to develop</b><ul>${c.sk.map(a=>`<li>${a}</li>`).join("")}</ul></div></div>
+<div class="flow"><span>Topics</span><u>→</u><span>Activities</span><u>→</u><span>Assessment</span><u>→</u><span>${c.id}</span></div><p style="font-size:.85rem;color:var(--mut)">Topic and skill mapping is suggested from the assessments; confirm with your lecturer.</p>`)}
+document.querySelectorAll("#clog button").forEach(b=>b.onclick=()=>showClo(+b.dataset.c));showClo(0);
+
+/* assessments */
+H($("#al"),ASSESS.map((a,i)=>`<button class="card click" data-a="${i}" style="--c:${a.c}"><b>${a.n}</b> <span class="tag">${a.clo}</span><span style="float:right;font-weight:700">${a.p}%</span><div class="pb" style="--p:${a.p}%"></div></button>`).join(""));
+function showAss(i){const a=ASSESS[i];document.querySelectorAll("#al button").forEach((b,j)=>b.classList.toggle("on",i==j));
+H($("#ad"),`<h3>${a.n}</h3><p><b>${a.p}%</b> · ${a.cat} · ${a.clo}</p><p><b>Related topic:</b> ${a.topic}<br><b>Assessment point:</b> ${a.when}</p><b>Suggested preparation</b><ul>${a.prep.map(p=>`<li>${p}</li>`).join("")}</ul>
+<!-- LECTURER: put rubric URL in ASSESS[].rubric -->${a.rubric?`<a href="${a.rubric}" target="_blank" rel="noopener">View rubric</a>`:`<p class="tbd">Rubric and marking criteria: details will be announced by lecturer.</p>`}`)}
+document.querySelectorAll("#al button").forEach(b=>b.onclick=()=>showAss(+b.dataset.a));showAss(0);
+
+/* tools */
+const cats=["All",...new Set(TOOLS.map(t=>t[1]))];let cat="All";
+function renderTools(){H($("#tf"),cats.map(c=>`<button class="btn s ${c==cat?"":"o"}" data-c="${c}">${c}</button>`).join(""));
+H($("#tg"),TOOLS.filter(t=>cat=="All"||t[1]==cat).map(t=>`<div class="card"><span class="tag t">Recommended example</span><h3>${t[0]}</h3><p style="margin:.2em 0"><span class="tag">${t[1]}</span><span class="tag g">${t[3]}</span></p><p style="margin:.4em 0"><b>Purpose:</b> ${t[2]}<br><b>Suggested use:</b> ${t[4]}</p><a class="btn s" style="text-decoration:none;display:inline-block" href="${t[5]}" target="_blank" rel="noopener">Explore Tool</a></div>`).join(""));
+document.querySelectorAll("#tf button").forEach(b=>b.onclick=()=>{cat=b.dataset.c;renderTools()})}
+renderTools();
+
+/* assignments with tick lists */
+const ticks=store.get("csc253tick",{});
+H($("#ag"),GUIDE.map((g,i)=>`<div class="card"><h3>${g.n}</h3><span class="tag">${g.clo}</span><span class="tag">${g.w}</span><span class="tag">${g.topic}</span><p>${g.why}</p><b>Suggested workflow</b><ol>${g.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+<b>Before you submit</b>${["Read the lecturer's official brief","Files and format follow lecturer instructions","Checked spelling, sound and playback","Submitted before the deadline"].map((c,j)=>`<label style="display:flex;gap:8px;padding:3px 0"><input type="checkbox" data-k="${i}-${j}" ${ticks[i+"-"+j]?"checked":""}>${c}</label>`).join("")}
+<!-- LECTURER: set GUIDE[].link -->${g.link?`<a href="${g.link}" target="_blank" rel="noopener">Official brief</a>`:`<p class="tbd" style="margin:8px 0 0">Official submission details: to be provided by lecturer.</p>`}</div>`).join(""));
+document.querySelectorAll("[data-k]").forEach(c=>c.onchange=()=>{ticks[c.dataset.k]=c.checked;store.set("csc253tick",ticks)});
+
+/* samples */
+H($("#sg"),SAMPLES.map((s,i)=>`<div class="card"><div class="ph">${s.img?`<img src="${s.img}" alt="${s.n}" style="max-width:100%">`:"Sample will be provided by lecturer"}</div><h3>${s.n}</h3><span class="tag">${s.type}</span><p style="margin:.4em 0">Skills: ${s.sk}</p><button class="btn s" data-s="${i}">View Sample</button></div>`).join(""));
+document.querySelectorAll("[data-s]").forEach(b=>b.onclick=()=>{const s=SAMPLES[+b.dataset.s];s.link?open(s.link,"_blank","noopener"):modal(`<h3>${s.n}</h3><p>Sample will be provided by lecturer.</p>`)});
+
+/* notes */
+H($("#ng"),TOPICS.map((t,i)=>`<div class="card"><h3>Topic ${i+1}: ${t.n}</h3><div class="rb">${[["notes","Notes"],["activity","Activity"]].map(r=>`<button class="btn s ${t.res[r[0]]?"":"o"}" data-t="${i}" data-r="${r[0]}">${r[1]}${t.res[r[0]]?"":" (pending)"}</button>`).join("")}</div></div>`).join(""));
+document.querySelectorAll("[data-t]").forEach(b=>b.onclick=()=>{const u=TOPICS[+b.dataset.t].res[b.dataset.r];u?open(u,"_blank","noopener"):modal(`<h3>${b.textContent.replace(" (pending)","")} – ${TOPICS[+b.dataset.t].n}</h3><p>${TBD}.</p>`)});
+
+/* references */
+H($("#rg"),REFS.map(r=>`<div class="card"><span class="tag ${r.t=="Textbook"?"g":""}">${r.t}</span><p style="margin:.5em 0 0">${r.x}</p>${r.link?`<a class="btn s" style="text-decoration:none;display:inline-block;margin-top:12px" href="${r.link}" target="_blank" rel="noopener">📘 Open PDF</a>`:""}</div>`).join(""));
+
+/* checklist */
+let done=store.get("csc253ck",[]);
+function renderCk(){H($("#cl"),CHECK.map((c,i)=>`<label><input type="checkbox" data-i="${i}" ${done.includes(i)?"checked":""}>${c}</label>`).join(""));
+const p=Math.round(done.length/CHECK.length*100);$("#pp").textContent="Your CSC253 Progress: "+p+"%";$("#pbar").style.width=p+"%";
+document.querySelectorAll("#cl input").forEach(c=>c.onchange=()=>{const i=+c.dataset.i;done=c.checked?[...done,i]:done.filter(x=>x!=i);store.set("csc253ck",done);renderCk()})}
+$("#reset").onclick=()=>{done=[];store.set("csc253ck",done);renderCk()};renderCk();
+
+/* search */
+const IDX=[];
+TOPICS.forEach(t=>IDX.push(["Topic",t.n+" "+t.k.join(" "),"overview"]));
+for(let w=1;w<=17;w++){const s=wk(w),l=labFor(w);IDX.push(["Week","Week "+w+" "+(s.t>=0?TOPICS[s.t].n:"Consolidation")+" "+(s.a||"")+" "+(l?l.n+" "+l.tool:""),"journey",w])}
+TOOLS.forEach(t=>IDX.push(["Tool",t.slice(0,5).join(" "),"tools"]));
+ASSESS.forEach(a=>IDX.push(["Assessment",a.n+" "+a.clo+" "+a.topic,"assessment"]));
+CLOS.forEach(c=>IDX.push(["CLO",c.id+" "+c.v+" "+c.txt,"clos"]));
+TOPICS.forEach(t=>IDX.push(["Notes","Notes "+t.n,"notes"]));
+$("#q").oninput=e=>{const q=e.target.value.trim().toLowerCase(),r=$("#results");
+ if(!q){r.hidden=true;return}
+ const m=IDX.filter(x=>x[1].toLowerCase().includes(q)).slice(0,10);r.hidden=false;
+ H(r,m.length?m.map((x,i)=>`<button data-i="${IDX.indexOf(x)}"><em>${x[0]}</em><span>${x[1].split(" ").slice(0,7).join(" ")}</span></button>`).join(""):`<p style="padding:12px 16px;margin:0">No matches. Try a topic, tool or week number.</p>`);
+ r.querySelectorAll("button").forEach(b=>b.onclick=()=>{const x=IDX[+b.dataset.i];if(x[3])setWeek(x[3]);go(x[2]);r.hidden=true})};
+</script>
+</body>
+</html>
