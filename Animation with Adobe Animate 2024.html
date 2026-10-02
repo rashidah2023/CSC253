@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>Animation with Adobe Animate 2024</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F5F2F8;--card:#fff;--ink:#1f1830;--mut:#625a75;--acc:#7B2CBF;--hot:#E4572E;--line:#e1dbea;--ok:#ece4f7;--bad:#fde6e0;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#150f20;--card:#1f1830;--ink:#ece6f5;--mut:#a89fbb;--line:#352b4a;--ok:#2c1f46;--bad:#432019}}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,sans-serif}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;line-height:1.2;margin:.2em 0 .5em}
+header{background:#1f1830;color:#fff;padding:10px 16px;position:sticky;top:env(safe-area-inset-top,0px);z-index:5}
+nav{display:flex;gap:6px;overflow-x:auto;padding-top:6px}
+nav button{background:none;border:1px solid #ffffff44;color:#fff;border-radius:999px;padding:5px 13px;cursor:pointer;white-space:nowrap}
+nav button.on{background:var(--acc);border-color:var(--acc)}
+.bar{height:8px;background:var(--line);border-radius:9px;overflow:hidden}.bar i{display:block;height:100%;background:var(--acc);transition:width .4s}
+main{max-width:980px;margin:0 auto;padding:18px 14px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:10px 0;padding:4px 14px}
+summary{cursor:pointer;font-weight:700;padding:8px 0}
+.tip,.rem,.mis{border-left:4px solid var(--acc);background:var(--ok);padding:8px 12px;border-radius:6px;margin:10px 0}
+.rem{border-color:#c98a00;background:#fff3d1;color:#3a2c00}.mis{border-color:var(--hot);background:var(--bad)}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:8px;padding:10px 18px;cursor:pointer;font-size:1rem}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:9px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);cursor:pointer;font-size:1rem}
+.opt:hover:not(:disabled){border-color:var(--acc)}.opt.ok{background:var(--ok);border-color:var(--acc)}.opt.bad{background:var(--bad);border-color:var(--hot)}
+.q{border-bottom:1px solid var(--line);padding:8px 0}.fb{margin:4px 0;color:var(--mut)}.score{font-weight:700}
+label.ck{display:flex;gap:10px;align-items:flex-start;padding:5px 0;cursor:pointer}
+textarea{width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit}
+pre{background:#1f1830;color:#e8dff7;padding:10px 12px;border-radius:8px;overflow-x:auto;font-size:.9rem}
+table{border-collapse:collapse;width:100%}td,th{border:1px solid var(--line);padding:6px;text-align:left}.tbl{overflow-x:auto}
+.badge{text-align:center;opacity:.35}.badge.got{opacity:1}.badge div{font-size:2rem}
+.chip{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 14px;margin:3px;cursor:pointer;background:var(--card);color:var(--ink)}.chip.on{background:var(--acc);color:#fff;border-color:var(--acc)}
+.ball{width:26px;height:26px;border-radius:50%;background:var(--hot);animation:b 1s ease-in-out infinite alternate}@keyframes b{to{transform:translateX(220px)}}
+:focus-visible{outline:3px solid var(--hot);outline-offset:2px}
+</style></head><body>
+<header><b>🎞️ Animation with Adobe Animate 2024</b> <span id="tp" style="float:right;font-size:.85rem"></span><nav id="nav"></nav></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s);let cur=0,S={chk:{},ans:{},ref:{},rub:-1,tr:'h',tm:0,iv:null};
+const PG=['Home','Lab 1','Lab 2','Lab 3','Lab 4 Project','Practical Test','Quiz'];
+const T=a=>`<div class=tip>💡 <b>TIP</b><br>${a}</div>`,R=a=>`<div class=rem>📌 <b>REMEMBER</b><br>${a}</div>`,X=a=>`<div class=mis>⚠️ <b>COMMON MISTAKE</b><br>${a}</div>`;
+const C=a=>`<pre>${a}</pre>`;
+const NT='These steps are written for Adobe Animate 2024. Menu names can differ slightly, so use the Help or search box if you cannot find an item. Choose HTML5 Canvas or ActionScript 3.0 when creating the document, and keep the same type for the whole project.';
+const M=[
+{n:'Animation Concepts and Animate Basics',icon:'🏀',badge:'Animation Starter',obj:['Explain persistence of vision, frame rate and keyframes','Identify the Animate 2024 workspace','Create a document and a frame-by-frame animation','Test and save a project'],
+L:[['What is animation?','Animation shows many still images quickly so the brain sees motion (<b>persistence of vision</b>). <b>Frame rate</b> is frames per second (fps): 12 fps feels choppy, 24–30 fps feels smooth. A <b>frame</b> is one image. A <b>keyframe</b> is a frame where something changes. An <b>in-between</b> is a frame between keyframes.'+T('More frames per second makes motion smoother but needs more drawings.')],
+['Types of animation','<b>Frame-by-frame</b>: each frame drawn by hand. <b>Tweened</b>: you set start and end, Animate creates the in-between. <b>Interactive</b>: the user controls what happens (clicks, keys).'],
+['HTML5 Canvas vs ActionScript 3.0','<b>HTML5 Canvas</b> uses JavaScript and publishes to a web page that runs in any browser. <b>ActionScript 3.0</b> is the older Flash-style language for desktop or AIR output. The animation tools are the same; only the code differs.'+R('Adobe has said Animate is in maintenance mode: it works and gets fixes, but no new features.')]],
+N:[['A. Create the document',['Open Adobe Animate 2024. On the Home screen choose File › New (or the Character/Advanced tab).','Choose <b>HTML5 Canvas</b> or <b>ActionScript 3.0</b> (your instructor will say which).','Set Width 800, Height 600, Frame rate 24 and click Create.']],
+['B. Know the workspace',['Stage: the white area where the animation appears.','Timeline (bottom): layers and frames. The red playhead shows the current frame.','Tools (right): Selection, Brush, Shape, Text, Paint Bucket.','Properties panel: settings for the selected item.','Library: stores your symbols. If a panel is missing, open it from the Window menu.']],
+['C. Frame-by-frame bouncing ball',['Rename Layer 1 to Ball (double-click the name).','Choose the Oval tool (O), hold Shift and draw a ball at the top left.','Click frame 5 on the Ball layer and press <b>F6</b> to add a keyframe. Move the ball down.','Press F6 at frames 10, 15 and 20, moving the ball each time.','Click the Onion Skin button to see neighbouring frames and keep spacing even.','Press <b>Ctrl+Enter</b> to test.']],
+['D. Save and test',['Choose File › Save and name it Lab1_YourName.fla.','Press Ctrl+Enter to test in the player or browser.','Change the frame rate in Properties and compare the speed.']]],
+lab:['Lab 1 — First Animation','30–40 min',['Create a new document','Set size and 24 fps','Rename a layer','Draw a ball','Add keyframes with F6','Use onion skin','Test with Ctrl+Enter','Save the .fla file']],
+Q:[{q:'What does 24 fps mean?',o:['24 frames per second','24 files','24 layers'],a:0,e:'Frame rate is frames per second.'},{q:'Which key adds a keyframe?',o:['F6','F8','F12'],a:0,e:'F6 inserts a keyframe.'},{q:'True or false: A tween makes the in-between frames for you.',o:['True','False'],a:0,e:'You set the start and end; Animate fills the middle.'},{q:'Which type runs in any web browser?',o:['HTML5 Canvas','Nothing','Only AIR'],a:0,e:'HTML5 Canvas publishes to a web page.'}],
+ref:['What is the difference between a frame and a keyframe?','Which was easier for you: frame-by-frame or tweening? Why?']},
+{n:'Symbols, Tweens and Motion',icon:'🎬',badge:'Tween Master',obj:['Create and reuse symbols','Make motion tweens, shape tweens and easing','Apply animation principles','Use masks and sound'],
+L:[['Symbols','A <b>symbol</b> is reusable artwork stored in the Library. <b>Graphic</b>: simple drawing. <b>Movie Clip</b>: has its own timeline and can be controlled with code. <b>Button</b>: reacts to the mouse. Each copy on the Stage is an <b>instance</b>.'+X('Animating a plain shape. Convert it to a symbol first, or the tween will not work.')],
+['Tweens and easing','<b>Motion tween</b> moves, scales, rotates or fades a symbol. <b>Shape tween</b> morphs one shape into another. <b>Easing</b> makes motion start slow and stop slow, which feels natural.'],
+['Animation principles','<b>Squash and stretch</b> (shows weight), <b>anticipation</b> (a small move before the main action), <b>timing</b> (number of frames), <b>slow in and slow out</b> (easing), <b>arcs</b> (curved paths), <b>follow-through</b> and <b>exaggeration</b>.<div class=card>Demo: ball with easing <div class=ball></div></div>']],
+N:[['A. Make a symbol',['Draw a character or object, then select it with the Selection tool (V).','Press <b>F8</b> (Modify › Convert to Symbol).','Name it, choose <b>Movie Clip</b>, click OK.','Check that it appears in the Library panel.']],
+['B. Motion tween',['Place the symbol on frame 1 of its own layer.','Right-click the layer’s frame and choose <b>Create Motion Tween</b>. Animate extends the span to 24 frames.','Move the playhead to frame 24 and drag the symbol to a new position.','Add changes in Properties, e.g. Scale, Rotation (Transform) or Alpha (Color Effect).','Press Enter to preview.']],
+['C. Add easing',['Click inside the tween span.','In the Properties panel find Ease and set a value, e.g. 50 for ease out, -50 for ease in.','Compare the motion with no ease.']],
+['D. Shape tween',['Draw a circle on frame 1 (a plain shape, not a symbol).','Press F7 at frame 24 for a blank keyframe and draw a square.','Right-click between the frames and choose <b>Create Shape Tween</b>.']],
+['E. Mask and sound',['Create a layer above your picture and draw a shape for the window.','Right-click that layer and choose Mask. Both layers lock.','Import a sound with File › Import › Import to Library, then drag it to a new layer.','In Properties set Sync to Stream to match the animation.']],
+['F. Build a 10-second scene',['Use layers: Background, Character, Title.','Animate the character entering and exiting using a motion tween.','Fade in the title with Alpha.','Test with Ctrl+Enter.']]],
+lab:['Lab 2 — Animated Scene','40–50 min',['Create a symbol with F8','Name the symbol and check the Library','Create a motion tween','Add easing','Create a shape tween','Add a mask or sound','Name the layers','Test and save']],
+Q:[{q:'A motion tween needs the object to be…',o:['A symbol','A line only','A sound'],a:0,e:'Tweens work on symbols.'},{q:'Which makes motion slow down at the end?',o:['Ease out','Alpha','Mask'],a:0,e:'Easing controls acceleration.'},{q:'To morph a circle into a square use…',o:['Shape tween','Motion tween','Mask'],a:0,e:'Shape tween changes the shape.'},{q:'True or false: Movie Clips can be controlled with code.',o:['True','False'],a:0,e:'Instance names let code control them.'}],
+ref:['Which animation principle did you use?','How did symbols make your work easier?']},
+{n:'Interactivity with Code',icon:'🖱️',badge:'Interaction Builder',obj:['Explain events and instance names','Add buttons that control the timeline','Use variables for a score','Debug simple code'],
+L:[['How interaction works','An <b>event</b> (click, key press) triggers a <b>function</b>. Steps: give the object an <b>instance name</b>, add an event listener, then write what should happen.'+R('Use the same letters and capitals for names in code as in the Properties panel.')],
+['Timeline control','<b>stop()</b> pauses on a frame. <b>gotoAndStop</b> jumps to a frame number or label. Use <b>frame labels</b> (e.g. menu, play, end) to make screens.'],
+['Choose your track','Use the buttons in the notes to switch between <b>HTML5 Canvas (JavaScript)</b> and <b>ActionScript 3.0</b> code. Do only one track.']],
+NH:[['A. Set up three screens',['Create an HTML5 Canvas document.','Make a layer called Labels. At frames 1, 10 and 20 press F7, and in Properties type labels: menu, play, end.','Make a layer called Actions. Press F7 at frames 1, 10 and 20.','Add content for each screen on a layer called Content.']],
+['B. Button and instance name',['Draw a rounded rectangle and add text “Start”.','Select both, press F8, choose Button, name it btnStart.','On the Stage select the button, and in Properties type the instance name <b>btnStart</b>.']],
+['C. Write the JavaScript',['Click frame 1 of the Actions layer and press F9 to open Actions.','Type the code below.',C('this.stop();\nthis.btnStart.addEventListener("click", goPlay.bind(this));\nfunction goPlay(){\n  this.gotoAndStop("play");\n}'),'Do the same on frame 10 (a button btnEnd going to "end") and frame 20.','Press Ctrl+Enter and click the button.']],
+['D. Score variable',['On the first Actions frame add: <b>this.score = 0;</b>','In a click function add: <b>this.score++;</b> and update a Dynamic Text box named txtScore with <b>this.txtScore.text = "Score: " + this.score;</b>','Test to see the score change.']]],
+NA:[['A. Set up three screens',['Create an ActionScript 3.0 document.','Make a layer called Labels. At frames 1, 10 and 20 press F7, and in Properties type labels: menu, play, end.','Make a layer called Actions. Press F7 at frames 1, 10 and 20.','Add content for each screen on a layer called Content.']],
+['B. Button and instance name',['Draw a rounded rectangle and add text “Start”.','Select both, press F8, choose Button, name it btnStart.','On the Stage select the button and type the instance name <b>btnStart</b> in Properties.']],
+['C. Write the ActionScript',['Click frame 1 of the Actions layer and press F9.','Type the code below.',C('stop();\nbtnStart.addEventListener(MouseEvent.CLICK, goPlay);\nfunction goPlay(e:MouseEvent):void {\n  gotoAndStop("play");\n}'),'Repeat on frame 10 (btnEnd going to "end") and frame 20.','Press Ctrl+Enter and click the button.']],
+['D. Score variable',['On the first Actions frame add: <b>var score:int = 0;</b>','In a click function add: <b>score++;</b> and <b>txtScore.text = "Score: " + score;</b> (Dynamic Text named txtScore).','Test to see the score change.']]],
+lab:['Lab 3 — Interactive Scene','40–50 min',['Create three labelled screens','Make a button symbol','Give it an instance name','Write the click code','Move between screens','Add a score or text feedback','Test and fix errors','Save the project']],
+Q:[{q:'What lets code control an object?',o:['Instance name','Layer colour','Frame rate'],a:0,e:'Code finds objects by their instance names.'},{q:'What does stop() do?',o:['Pauses the timeline','Deletes frames','Saves'],a:0,e:'It halts playback on that frame.'},{q:'True or false: Frame labels can be used with gotoAndStop.',o:['True','False'],a:0,e:'You can jump to labels instead of numbers.'},{q:'Button does nothing. First check…',o:['The instance name','The colour','The font'],a:0,e:'A wrong name is the most common cause.'}],
+ref:['Which error did you fix and how?','Which interaction would you add next?']},
+{n:'Final Project: Interactive App',icon:'🚀',badge:'App Creator',obj:['Plan an app with a screen map','Combine animation, symbols, code and sound','Publish and submit the project'],
+L:[['Choose a project type','Quiz, animated story, mini-game, product showcase or educational explainer. Keep it small and finish it.'+T('Start with one working screen, then add more.')],
+['Project requirements','At least 3 screens, start screen, navigation, 3 symbols, 3 animation techniques, 3 interactions, sound, and a result or feedback element.']],
+N:[['A. Plan',['Write the app idea and users in two sentences.','Draw a screen map: Menu → Play → End.','List your assets: images, sounds, text.']],
+['B. Build',['Create the document (HTML5 Canvas or AS3) and name the layers.','Build each screen with labels and symbols.','Animate with tweens and easing.','Add button code from Lab 3 for navigation.','Add sound and a score or feedback.']],
+['C. Test',['Press Ctrl+Enter often.','Click every button and try wrong inputs.','Ask a classmate to try your app.']],
+['D. Publish and submit',['Choose File › Publish Settings and select the output (HTML5 Canvas or ActionScript/AIR as instructed).','Click Publish.','Open the published HTML file in a browser, or run the exported file.','Submit the .fla, the published folder as a zip, and a short design explanation.']]],
+lab:['Lab 4 — App Project','120 min',['Write the idea and users','Draw the screen map','Collect assets','Create at least 3 screens','Add 3 symbols','Use 3 animation techniques','Add 3 interactions','Add sound and feedback','Publish and test','Submit files']],
+Q:[{q:'First step when building an app?',o:['Plan the idea and screens','Export','Add sound'],a:0,e:'A plan avoids rework.'},{q:'Which file keeps the editable project?',o:['.fla','.html only','.png'],a:0,e:'The .fla can be opened and edited.'}],
+ref:['What was your biggest challenge in the project?','How did you test your app?']}];
+const SC=[['A ball must travel across the screen smoothly.',['Motion tween','Shape tween','Mask','Sound'],0,'Motion tween moves symbols.'],['A circle must change into a star.',['Shape tween','Motion tween','Button','Label'],0,'Shape tween morphs shapes.'],['Show a picture only through a window shape.',['Mask','Easing','Stop','Alpha'],0,'A mask reveals part of a layer.'],['A button must jump to the end screen.',['gotoAndStop with a label','Shape tween','Ease','Layer'],0,'Use a click listener with gotoAndStop.'],['Motion should start slow and speed up.',['Ease in','Ease out','Mask','Frame rate 1'],0,'Ease in accelerates slowly at first.'],['The animation should wait on a menu.',['stop()','play()','Export','Mask'],0,'stop() holds the timeline.']].map(s=>({q:s[0],o:s[1],a:0,e:s[3]}));
+const PT=['Create a document (state the type) with correct size and 24 fps','Frame-by-frame: a short bouncing-ball loop','Convert artwork to a symbol and name it','Motion tween with easing across the stage','Shape tween or mask effect','Add a button with an instance name that starts or stops the animation','Test, save the .fla and publish','Name and submit the files'];
+const MS=[['Concept accuracy (frames, keyframes, symbols)',20],['Frame-by-frame animation',15],['Motion tween and easing',20],['Shape tween or mask',10],['Interaction works',20],['Organisation and submission',15]];
+const RB=[['Concept and design',15,'Clear idea, screens and user flow.'],['Animation quality',20,'Good timing, easing and principles.'],['Interactivity and logic',20,'Buttons, navigation and score work without errors.'],['Symbols and organisation',10,'Named layers, symbols and instances.'],['Visual design',10,'Consistent style and readable text.'],['Sound and feedback',5,'Sound and result feedback add value.'],['Technical execution',10,'Publishes and runs correctly.'],['Documentation and responsible use',10,'Explanation provided; assets permitted.']];
+const SES=[['0–10','Introduction / objectives'],['10–25','Instructor demonstration'],['25–50','Guided practice'],['50–80','Individual exercise'],['80–105','Mini challenge'],['105–115','Quiz'],['115–120','Save, submit, reflect']];
+function cnt(p){return Object.keys(S.chk).filter(k=>S.chk[k]&&k.startsWith(p)).length+Object.keys(S.ans).filter(k=>k.startsWith(p)).length}
+function pct(i){const m=M[i],n=i+1,t=m.L.length+m.lab.length-2+m.Q.length;return Math.min(100,Math.round((cnt('l'+n+'-')+cnt('e'+n+'-')+cnt('q'+n+'-'))/t*100))}
+function testDone(){return PT.every((_,i)=>S.chk['p-'+i])}
+function all(){return Math.round(([0,1,2,3].reduce((a,i)=>a+pct(i),0)+(testDone()?100:0))/5)}
+function bar(p){return `<div class=bar><i style="width:${p}%"></i></div>`}
+function quiz(a,p){return a.map((x,i)=>{const k=p+i,v=S.ans[k];return `<div class=q><b>${i+1}. ${x.q}</b>${x.o.map((o,j)=>`<button class="opt ${v==null?'':j==x.a?'ok':v==j?'bad':''}" ${v==null?'':'disabled'} onclick="ans('${k}',${j})">${o}</button>`).join('')}<p class=fb>${v==null?'':(v==x.a?'✅ Correct. ':'❌ Not quite. ')+x.e}</p></div>`}).join('')+`<p class=score>Score: ${a.filter((x,i)=>S.ans[p+i]===x.a).length}/${a.length}</p>`}
+function ans(k,j){S.ans[k]=j;show(cur,1)}
+function tick(k){S.chk[k]=!S.chk[k];upd()}
+function ck(k,t){return `<label class=ck><input type=checkbox ${S.chk[k]?'checked':''} onchange="tick('${k}')"> <span>${t}</span></label>`}
+function upd(){$('#tp').textContent='Overall '+all()+'%';document.querySelectorAll('[data-p]').forEach(e=>e.innerHTML=bar(pct(+e.dataset.p)))}
+function gotQ(n){const a=M[n].Q;return a.filter((x,i)=>S.ans['q'+(n+1)+'-'+i]===x.a).length+'/'+a.length}
+function refl(k,q){return `<p><b>${q}</b></p><textarea oninput="S.ref['${k}']=this.value" placeholder="Type your answer…">${S.ref[k]||''}</textarea>`}
+function steps(a){return a.map(s=>{let l='';s[1].forEach(x=>{if(x.startsWith('<pre'))l=l.replace(/<\/li>$/,x+'</li>');else l+=`<li>${x}</li>`});return `<h3>${s[0]}</h3><ol>${l}</ol>`}).join('')}
+function setTr(t){S.tr=t;show(cur,1)}
+function modPage(i){const m=M[i],n=i+1;
+let h=`<h1>Lab ${n}: ${m.n}</h1><div data-p=${i}></div>
+<details open><summary>Learning Objectives</summary><ul>${m.obj.map(o=>`<li>${o}</li>`).join('')}</ul></details>
+<details open><summary>Learn</summary>${m.L.map((l,j)=>`<h3>${l[0]}</h3><p>${l[1]}</p>${ck('l'+n+'-'+j,'Mark as read')}`).join('')}</details>`;
+if(m.NH)h+=`<details open><summary>📒 Notes: Step-by-step (Animate 2024)</summary><p><span class="chip ${S.tr=='h'?'on':''}" tabindex=0 onclick="setTr('h')">HTML5 Canvas (JavaScript)</span><span class="chip ${S.tr=='a'?'on':''}" tabindex=0 onclick="setTr('a')">ActionScript 3.0</span></p>${steps(S.tr=='h'?m.NH:m.NA)}${T(NT)}</details>`;
+else h+=`<details open><summary>📒 Notes: Step-by-step (Animate 2024)</summary>${steps(m.N)}${T(NT)}</details>`;
+if(i==1)h+=`<details open><summary>Try It: Which technique should I use?</summary>${quiz(SC,'t')}</details>`;
+h+=`<details open><summary>Exercise: ${m.lab[0]} (${m.lab[1]})</summary>${m.lab.slice(2).map((t,j)=>ck('e'+n+'-'+j,t)).join('')}</details>`;
+if(i==3)h+=`<h2>Project rubric (tap a criterion)</h2><div class=card>${RB.map((r,j)=>`<button class=opt onclick="S.rub=${j};show(4,1)">${r[0]} — ${r[1]}%</button>${S.rub==j?`<p class=fb>${r[2]}</p>`:''}`).join('')}</div>`;
+h+=`<details open><summary>Quiz</summary>${quiz(m.Q,'q'+n+'-')}</details><details open><summary>Reflection</summary>${m.ref.map((q,j)=>refl('r'+n+j,q)).join('')}</details>`;return h}
+function home(){return `<h1>Animation and Interactive Design with Adobe Animate 2024</h1><p>Learn animation concepts, then build interactivity using either HTML5 Canvas (JavaScript) or ActionScript 3.0. Finish with an interactive app project and a separate practical test.</p><button class=btn onclick="show(1)">Start Learning</button>
+<div class=grid>${M.map((m,i)=>`<div class=card><h3>${m.icon} Lab ${i+1}</h3><p>${m.n}</p><div data-p=${i}></div><p>Quiz: ${gotQ(i)}</p><button class=btn onclick="show(${i+1})">Open</button></div>`).join('')}</div>
+<h2>Achievements</h2><div class=grid>${M.map((m,i)=>`<div class="badge card ${pct(i)==100?'got':''}"><div>${m.icon}</div>${m.badge}</div>`).join('')}<div class="badge card ${testDone()?'got':''}"><div>🏆</div>Test Passed</div></div>
+<details><summary>2-hour lab structure</summary>${SES.map(s=>`<p><b>${s[0]} min</b> — ${s[1]}</p>`).join('')}</details>
+<details><summary>About Animate 2024</summary><p>Adobe says Animate is in maintenance mode: it still gets security and bug fixes but no new features. The skills you learn (timeline, symbols, tweening, events) apply to other tools.</p></details>`}
+function tmr(){if(S.iv){clearInterval(S.iv);S.iv=null;return}S.iv=setInterval(()=>{S.tm++;const e=$('#clock');if(e)e.textContent=String(Math.floor(S.tm/60)).padStart(2,'0')+':'+String(S.tm%60).padStart(2,'0')},1000)}
+function test(){return `<h1>Practical Test: Animation Concepts</h1><div class=card><p>Individual, about 90–120 minutes. Choose HTML5 Canvas or ActionScript 3.0 as instructed. Submit the .fla and the published files.</p><p style="font-size:2rem;margin:0" id=clock>${String(Math.floor(S.tm/60)).padStart(2,'0')}:${String(S.tm%60).padStart(2,'0')}</p><button class=btn onclick="tmr()">Start / Stop timer</button></div>
+<h2>Task checklist</h2><div class=card>${PT.map((t,i)=>ck('p-'+i,t)).join('')}<p class=score>${PT.filter((_,i)=>S.chk['p-'+i]).length}/${PT.length} ${testDone()?'✅ All tasks done':''}</p></div>
+<h2>Marking sheet</h2><div class="card tbl"><table><tr><th>Criterion</th><th>Marks (%)</th></tr>${MS.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')}<tr><th>Total</th><th>100</th></tr></table></div>`}
+function qz(){return M.map((m,i)=>`<h2>Lab ${i+1} quiz</h2><div class=card>${quiz(m.Q,'q'+(i+1)+'-')}</div>`).join('')}
+function show(p,keep){cur=p;const y=scrollY;$('#nav').innerHTML=PG.map((n,i)=>`<button class="${i==p?'on':''}" onclick="show(${i})">${n}</button>`).join('');
+$('#app').innerHTML=[home,()=>modPage(0),()=>modPage(1),()=>modPage(2),()=>modPage(3),test,qz][p]();upd();scrollTo(0,keep?y:0)}
+show(0);
+</script></body></html>
