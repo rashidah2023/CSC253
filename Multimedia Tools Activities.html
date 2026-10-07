@@ -1,0 +1,335 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Multimedia Project Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: lab-bench console. Header + scrollable tab strip, one activity panel at a time, steps rail left of the work area on wide screens. */
+:root{
+  --bg:#f1f5f8; --surface:#ffffff; --ink:#11202b; --muted:#566874; --line:#d2dde5;
+  --accent:#0b6e8a; --accent-ink:#ffffff; --soft:#e1eef4;
+  --good:#1b7f4b; --good-bg:#e0f3e8; --bad:#b3261e; --bad-bg:#fbe5e3; --warn:#8a5a00; --warn-bg:#fdf0d2;
+  --display:'Bricolage Grotesque','Segoe UI',system-ui,sans-serif;
+  --body:'IBM Plex Sans','Segoe UI',system-ui,sans-serif;
+  --mono:'IBM Plex Mono',ui-monospace,Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1920; --surface:#14252e; --ink:#e5eef3; --muted:#92a5b2; --line:#294250;
+  --accent:#4fc1e0; --accent-ink:#06222c; --soft:#18323f;
+  --good:#63d393; --good-bg:#123624; --bad:#ff8f86; --bad-bg:#3d1c1a; --warn:#f2c555; --warn-bg:#3a2e0e; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1920; --surface:#14252e; --ink:#e5eef3; --muted:#92a5b2; --line:#294250;
+  --accent:#4fc1e0; --accent-ink:#06222c; --soft:#18323f;
+  --good:#63d393; --good-bg:#123624; --bad:#ff8f86; --bad-bg:#3d1c1a; --warn:#f2c555; --warn-bg:#3a2e0e; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.55;padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:960px;margin-inline:auto;display:flex;flex-direction:column;gap:16px}
+header h1{font-family:var(--display);font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0 0 4px;text-wrap:balance}
+header p{margin:0;color:var(--muted);max-width:60ch}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0 0 6px}
+nav{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}
+nav button{flex:0 0 auto;font:500 14px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:9px 14px;cursor:pointer;display:flex;gap:8px;align-items:center}
+nav button[aria-selected="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+nav .done{font-family:var(--mono);font-size:12px;opacity:.85}
+section.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px;display:flex;flex-direction:column;gap:18px}
+section.panel[hidden]{display:none}
+.top{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:baseline}
+.top h2{font-family:var(--display);font-size:22px;margin:0}
+.meta{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.how{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.how li{background:var(--soft);border-radius:6px;padding:10px 12px;font-size:14px}
+.how b{font-family:var(--mono);font-size:12px;display:block;color:var(--accent);margin-bottom:2px}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button.btn{font:600 14px var(--body);background:var(--accent);color:var(--accent-ink);border:0;border-radius:6px;padding:10px 16px;cursor:pointer}
+button.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+select,input[type=text],textarea{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:8px 10px;min-width:0;max-width:100%}
+textarea{width:100%;resize:vertical;min-height:72px}
+label{font-weight:500;font-size:14px}
+.result{border-radius:8px;padding:12px 14px;font-size:14px;background:var(--soft)}
+.result:empty{display:none}
+.ok{color:var(--good)} .no{color:var(--bad)} .mid{color:var(--warn)}
+.score{font-family:var(--display);font-size:20px}
+/* pipeline */
+.items{display:flex;flex-wrap:wrap;gap:8px;min-height:44px}
+.chip{font:500 14px var(--body);color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:6px;padding:7px 11px;cursor:pointer}
+.chip.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent);}
+.chip.right{background:var(--good-bg);border-color:var(--good)}
+.chip.wrong{background:var(--bad-bg);border-color:var(--bad)}
+.stages{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.stage{border:1px dashed var(--line);border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:8px;min-height:130px;cursor:pointer;background:var(--bg)}
+.stage h3{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin:0;color:var(--accent)}
+.stage .chip{padding:5px 8px;font-size:13px}
+@media(max-width:700px){.stages{grid-template-columns:1fr 1fr}}
+/* tables */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle;font-size:14px}
+th{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+.badge{display:inline-block;font-family:var(--mono);font-size:12px;padding:2px 8px;border-radius:99px}
+.badge.ok{background:var(--good-bg)} .badge.no{background:var(--bad-bg)} .badge.mid{background:var(--warn-bg)}
+.persona{background:var(--soft);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px}
+.meter{height:10px;background:var(--bg);border:1px solid var(--line);border-radius:99px;overflow:hidden}
+.meter i{display:block;height:100%;background:var(--accent);width:0;transition:width .25s}
+.meter.over i{background:var(--bad)}
+@media(prefers-reduced-motion:reduce){.meter i{transition:none}}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:4px;min-width:0}
+.field select,.field input{width:100%}
+pre.prompt{margin:0;white-space:pre-wrap;word-break:break-word;font-family:var(--mono);font-size:13px;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+.checks{margin:0;padding:0;list-style:none;display:grid;gap:4px;font-size:14px}
+.mono-in{font-family:var(--mono);font-size:13px;width:100%}
+footer{color:var(--muted);font-size:13px}
+</style>
+<style>
+.stages.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media(max-width:700px){.stages.four{grid-template-columns:1fr 1fr}}
+.cbs{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px}
+.cbs label{display:flex;gap:8px;align-items:center;font-weight:400}
+.story{background:var(--soft);border-radius:8px;padding:14px 16px;max-width:70ch}
+.story p{margin:0 0 8px}.story p:last-child{margin:0}
+</style>
+
+<div class="wrap">
+<header>
+  <p class="eyebrow">Chapter 2 · Individual activities · Set 2 · 20 min each</p>
+  <h1>Multimedia Project Lab</h1>
+  <p>Five solo tasks on the multimedia team, connectivity and the project lifecycle. Work through the one your lecturer assigns, then press Check.</p>
+</header>
+
+<nav role="tablist" id="tabs"></nav>
+
+<!-- 1 ROLES -->
+<section class="panel" id="p0" role="tabpanel">
+  <div class="top"><h2>Who Does What?</h2><span class="meta">Multimedia team · slides 17–19 · 20 min</span></div>
+  <ol class="how">
+    <li><b>2 MIN</b>Look at the 8 roles in the dropdown.</li>
+    <li><b>12 MIN</b>Choose the best role for each job below.</li>
+    <li><b>6 MIN</b>Check, then say which role you would take.</li>
+  </ol>
+  <div class="tbl"><table><thead><tr><th>Job</th><th>Role</th><th>Result</th></tr></thead><tbody id="roleRows"></tbody></table></div>
+  <div class="field"><label for="myrole">Which role would you take in a real team, and why? (1–2 sentences)</label><textarea id="myrole"></textarea></div>
+  <div class="row"><button class="btn" id="roleCheck">Check my answers</button><button class="btn ghost" id="roleReset">Reset</button></div>
+  <div class="result" id="roleOut" aria-live="polite"></div>
+</section>
+
+<!-- 2 CONNECTIVITY -->
+<section class="panel" id="p1" role="tabpanel" hidden>
+  <div class="top"><h2>Right Cable, Right Job</h2><span class="meta">Connectivity · slide 20 · 20 min</span></div>
+  <ol class="how">
+    <li><b>3 MIN</b>Skim the five interfaces in the reference below.</li>
+    <li><b>12 MIN</b>Pick an interface for each situation and give a short reason.</li>
+    <li><b>5 MIN</b>Check and read the feedback.</li>
+  </ol>
+  <details><summary style="cursor:pointer;font-weight:500">Quick reference</summary>
+    <div class="tbl"><table><thead><tr><th>Interface</th><th>Best known for</th><th>Weak point</th></tr></thead><tbody id="refRows"></tbody></table></div>
+  </details>
+  <div class="tbl"><table><thead><tr><th>Situation</th><th>Interface</th><th>Your reason</th><th>Result</th></tr></thead><tbody id="connRows"></tbody></table></div>
+  <div class="row"><button class="btn" id="connCheck">Check my answers</button><button class="btn ghost" id="connReset">Reset</button></div>
+  <div class="result" id="connOut" aria-live="polite"></div>
+</section>
+
+<!-- 3 STAGES -->
+<section class="panel" id="p2" role="tabpanel" hidden>
+  <div class="top"><h2>Stage Sorter</h2><span class="meta">Project lifecycle · slide 21 · 20 min</span></div>
+  <ol class="how">
+    <li><b>STEP 1</b>Tap a task to select it.</li>
+    <li><b>STEP 2</b>Tap the stage it belongs to. Tap a placed task to send it back.</li>
+    <li><b>STEP 3</b>Place all 12, then press Check.</li>
+  </ol>
+  <div class="items" id="pool"></div>
+  <div class="stages four" id="stages"></div>
+  <div class="row"><button class="btn" id="stCheck">Check my sorting</button><button class="btn ghost" id="stReset">Reset</button></div>
+  <div class="result" id="stOut" aria-live="polite"></div>
+</section>
+
+<!-- 4 CASE -->
+<section class="panel" id="p3" role="tabpanel" hidden>
+  <div class="top"><h2>What Went Wrong?</h2><span class="meta">Lifecycle and teamwork · slides 17–21 · 20 min</span></div>
+  <ol class="how">
+    <li><b>5 MIN</b>Read the case.</li>
+    <li><b>10 MIN</b>For each problem, choose the weak stage and the responsible role, then write a fix.</li>
+    <li><b>5 MIN</b>Check and compare with the model answer.</li>
+  </ol>
+  <div class="story">
+    <p><b>Kampus Kini</b> is a five-person team building an interactive promo app for a university open day.</p>
+    <p>Two days before launch the client opens the app on a tablet and it crashes. The narration is half a second behind the animation. The team has spent 30% more than planned and nobody can say where the money went. The client also sees the finished screens for the first time and asks for the whole menu to change.</p>
+  </div>
+  <div id="caseBox" style="display:flex;flex-direction:column;gap:14px"></div>
+  <div class="row"><button class="btn" id="caseCheck">Check my answers</button><button class="btn ghost" id="caseReset">Reset</button></div>
+  <div class="result" id="caseOut" aria-live="polite"></div>
+</section>
+
+<!-- 5 PLAN -->
+<section class="panel" id="p4" role="tabpanel" hidden>
+  <div class="top"><h2>Plan My Mini Project</h2><span class="meta">Whole chapter · 20 min</span></div>
+  <ol class="how">
+    <li><b>2 MIN</b>Pick a project.</li>
+    <li><b>14 MIN</b>Fill every section of the plan.</li>
+    <li><b>4 MIN</b>Check the completeness list, copy the plan and submit it.</li>
+  </ol>
+  <div class="field"><label for="proj">Project</label><select id="proj"><option value="">Choose a project</option><option>60-second campus promo video</option><option>Student club website</option><option>Interactive quiz app</option></select></div>
+  <div><b style="font-size:14px">Team roles needed (pick at least 4)</b><div class="cbs" id="roleBoxes"></div></div>
+  <div class="grid2">
+    <div class="field"><label for="hw">Hardware and connections</label><input type="text" id="hw" placeholder="e.g. DSLR, laptop, HDMI to projector"></div>
+    <div class="field"><label for="sw">Software (production and authoring)</label><input type="text" id="sw" placeholder="e.g. Audacity, Premiere, Unity"></div>
+    <div class="field"><label for="nm">Example file name</label><input type="text" id="nm" placeholder="e.g. 02_logo-main.png"></div>
+  </div>
+  <b style="font-size:14px">One task for each lifecycle stage</b>
+  <div class="grid2">
+    <div class="field"><label for="t1">1. Planning and Costing</label><input type="text" id="t1"></div>
+    <div class="field"><label for="t2">2. Design and Production</label><input type="text" id="t2"></div>
+    <div class="field"><label for="t3">3. Testing</label><input type="text" id="t3"></div>
+    <div class="field"><label for="t4">4. Delivery</label><input type="text" id="t4"></div>
+  </div>
+  <ul class="checks" id="planChecks"></ul>
+  <div><b style="font-size:14px">Your plan</b><pre class="prompt" id="planOut"></pre></div>
+  <div class="row"><button class="btn" id="copyPlan">Copy plan</button><span class="meta" id="copyMsg"></span></div>
+</section>
+
+<footer>Answers are checked in your browser and are not saved or sent anywhere. Take a screenshot of your result to submit.</footer>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const words=s=>s.trim().split(/\s+/).filter(Boolean).length;
+const titles=['Roles','Connectivity','Stages','Case study','Project plan'];
+function setBest(i,txt){const e=$('#tabs').children[i].querySelector('.done');if(e)e.textContent=txt}
+titles.forEach((t,i)=>{
+  const b=document.createElement('button');b.setAttribute('role','tab');b.setAttribute('aria-selected',i===0);
+  b.innerHTML=`${i+1}. ${t} <span class="done"></span>`;
+  b.onclick=()=>{[...$('#tabs').children].forEach((x,j)=>{x.setAttribute('aria-selected',j===i);$('#p'+j).hidden=j!==i})};
+  $('#tabs').appendChild(b);
+});
+const roles=['Project manager','Multimedia designer','Interface designer','Multimedia writer','Audio specialist','Video specialist','Multimedia programmer','Web producer'];
+const roleOpts='<option value="">Choose</option>'+roles.map((r,i)=>`<option value="${i}">${r}</option>`).join('');
+
+/* ---------- 1 Roles ---------- */
+const jobs=[
+ ['Keep the client informed and make sure the team stays on schedule.',0],
+ ['Create illustrations and animations so the project looks appealing.',1],
+ ['Design menus and buttons so users can find and open content easily.',2],
+ ['Write the voice-over script and the characters’ dialogue.',3],
+ ['Book the recording session and edit the recorded narration.',4],
+ ['Shoot quality footage and cut it on a digital non-linear editing system.',5],
+ ['Write code that controls timing and transitions across the media.',6],
+ ['Assemble a coordinated set of web pages and update them after feedback.',7],
+ ['Understand the limits of the hardware and software before work starts.',0],
+ ['Prepare the finished video file for delivery on DVD or the web.',5]];
+$('#roleRows').innerHTML=jobs.map((j,i)=>`<tr><td>${esc(j[0])}</td><td><select id="r${i}" aria-label="Role for job ${i+1}">${roleOpts}</select></td><td id="rr${i}"></td></tr>`).join('');
+$('#roleReset').onclick=()=>{jobs.forEach((_,i)=>{$('#r'+i).value='';$('#rr'+i).innerHTML=''});$('#myrole').value='';$('#roleOut').innerHTML=''};
+$('#roleCheck').onclick=()=>{
+  let ok=0,blank=0;
+  jobs.forEach((j,i)=>{
+    const v=$('#r'+i).value;
+    if(v===''){blank++;$('#rr'+i).innerHTML='<span class="badge mid">Incomplete</span>';return}
+    if(+v===j[1]){ok++;$('#rr'+i).innerHTML='<span class="badge ok">Correct</span>'}
+    else $('#rr'+i).innerHTML=`<span class="badge no">Check again</span><div class="meta">Best fit: ${roles[j[1]]}</div>`;
+  });
+  $('#roleOut').innerHTML=`<span class="score">${ok}/10 correct</span>`+(blank?`<br><span class="mid">${blank} job(s) still unanswered.</span>`:'')+(words($('#myrole').value)<8?'<br><span class="mid">Write at least 8 words about the role you would take.</span>':'');
+  setBest(0,ok+'/10');
+};
+
+/* ---------- 2 Connectivity ---------- */
+const ifs=['SCSI','IDE','USB','FireWire','HDMI'];
+const ref=[
+ ['SCSI','Connects many high-performance devices on one bus; servers and workstations','Expensive, special controller card'],
+ ['IDE','Cheap, easy internal connection for hard drives and optical drives','Slower, one device per channel, bulky ribbon cable'],
+ ['USB','Plug and play for keyboards, webcams, drives, phones; also gives power','Speed depends on version, weaker for sustained heavy transfers'],
+ ['FireWire','Fast, daisy-chains devices; used for camcorders and external drives','Less common today, not on most modern machines'],
+ ['HDMI','One cable carries HD/4K video and audio to monitors, TVs and projectors','Display only, no data storage use, short cable length']];
+$('#refRows').innerHTML=ref.map(r=>`<tr><td><b>${r[0]}</b></td><td>${esc(r[1])}</td><td>${esc(r[2])}</td></tr>`).join('');
+const conn=[
+ ['Plug a webcam, keyboard and flash drive into a laptop.',2,'plug and play'],
+ ['Send 4K video and sound to a projector with a single cable.',4,'video and audio in one cable'],
+ ['Import footage from a digital camcorder at high speed.',3,'high-speed transfer for cameras'],
+ ['Connect several high-performance drives in a server.',0,'multiple devices on one bus'],
+ ['Fit an internal hard drive and DVD drive in an older desktop PC.',1,'cheap internal connection'],
+ ['Connect a gaming console to a TV in high definition.',4,'hd video and audio'],
+ ['Charge a smartphone and copy photos to a computer.',2,'power and data'],
+ ['Chain several external drives from one port on an older Mac.',3,'daisy-chaining']];
+$('#connRows').innerHTML=conn.map((c,i)=>`<tr><td>${esc(c[0])}</td><td><select id="c${i}" aria-label="Interface for situation ${i+1}"><option value="">Choose</option>${ifs.map((f,j)=>`<option value="${j}">${f}</option>`).join('')}</select></td><td><input type="text" id="cr${i}" aria-label="Reason ${i+1}" placeholder="Why?" autocomplete="off"></td><td id="cc${i}"></td></tr>`).join('');
+$('#connReset').onclick=()=>{conn.forEach((_,i)=>{$('#c'+i).value='';$('#cr'+i).value='';$('#cc'+i).innerHTML=''});$('#connOut').innerHTML=''};
+$('#connCheck').onclick=()=>{
+  let ok=0,blank=0,noReason=0;
+  conn.forEach((c,i)=>{
+    const v=$('#c'+i).value,why=$('#cr'+i).value;
+    if(v===''){blank++;$('#cc'+i).innerHTML='<span class="badge mid">Incomplete</span>';return}
+    const r=words(why)<2;if(r)noReason++;
+    if(+v===c[1]){ok++;$('#cc'+i).innerHTML='<span class="badge ok">Correct</span>'+(r?'<div class="meta">Add a reason. Hint: '+esc(c[2])+'</div>':'')}
+    else $('#cc'+i).innerHTML=`<span class="badge no">Check again</span><div class="meta">Best fit: ${ifs[c[1]]} (${esc(c[2])})</div>`;
+  });
+  $('#connOut').innerHTML=`<span class="score">${ok}/8 correct</span>`+(blank?`<br><span class="mid">${blank} situation(s) unanswered.</span>`:'')+(noReason&&!blank?`<br><span class="mid">${noReason} reason(s) missing or too short.</span>`:'');
+  setBest(1,ok+'/8');
+};
+
+/* ---------- 3 Stages ---------- */
+const stNames=['Planning and Costing','Design and Production','Testing','Delivery'];
+const tasks=[
+ ['Analyse the client’s needs and objectives',0],['Prepare a time estimate and budget',0],['Build a short prototype to prove the concept',0],['Outline the template, structure and navigation',0],
+ ['Create the graphics, audio and video assets',1],['Carry out the planned tasks to build the product',1],['Revise the product using the client’s feedback',1],
+ ['Check the project meets its objectives',2],['Run it on every proposed delivery platform',2],['Confirm it meets the client’s requirements',2],
+ ['Package the final project',3],['Hand it over to the end user',3]];
+let place={},sel=null,checked=false;
+function drawSt(){
+  $('#pool').innerHTML=tasks.map((d,i)=>place[i]===undefined?`<button class="chip ${sel===i?'sel':''}" data-i="${i}">${esc(d[0])}</button>`:'').join('')||'<span class="meta">All placed. Press Check.</span>';
+  $('#stages').innerHTML=stNames.map((s,si)=>`<div class="stage" data-s="${si}" tabindex="0" role="button" aria-label="Place in ${s}"><h3>${si+1}. ${s}</h3>${tasks.map((d,i)=>place[i]===si?`<button class="chip ${checked?(d[1]===si?'right':'wrong'):''}" data-r="${i}">${esc(d[0])}</button>`:'').join('')}</div>`).join('');
+  document.querySelectorAll('#pool .chip').forEach(c=>c.onclick=()=>{sel=+c.dataset.i;drawSt()});
+  document.querySelectorAll('#stages .chip').forEach(c=>c.onclick=e=>{e.stopPropagation();delete place[+c.dataset.r];checked=false;drawSt()});
+  document.querySelectorAll('.stage').forEach(s=>{const go=()=>{if(sel===null)return;place[sel]=+s.dataset.s;sel=null;checked=false;drawSt()};s.onclick=go;s.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go()}}});
+}
+$('#stReset').onclick=()=>{place={};sel=null;checked=false;$('#stOut').innerHTML='';drawSt()};
+$('#stCheck').onclick=()=>{
+  if(Object.keys(place).length<tasks.length){$('#stOut').innerHTML='<span class="mid">Place all 12 tasks first.</span>';return}
+  checked=true;drawSt();
+  const wrong=tasks.filter((d,i)=>place[i]!==d[1]),ok=tasks.length-wrong.length;
+  $('#stOut').innerHTML=`<span class="score">${ok}/12 correct</span>`+(wrong.length?'<br>Review: '+wrong.map(d=>`<b>${esc(d[0])}</b> belongs in ${stNames[d[1]]}`).join('; ')+'.':'<br><span class="ok">Perfect. Good planning, creative design and thorough testing lead to a successful project.</span>');
+  setBest(2,ok+'/12');
+};
+drawSt();
+
+/* ---------- 4 Case ---------- */
+const probs=[
+ ['The app crashes on the client’s tablet.',2,[6,0],'Testing: run the project on every proposed delivery platform. The multimedia programmer fixes it and the project manager schedules the test.'],
+ ['The narration is half a second behind the animation.',1,[4,6],'Design and Production: the audio specialist re-edits the narration and the programmer corrects the timing.'],
+ ['Spending is 30% over plan and nobody can explain it.',0,[0],'Planning and Costing: the project manager owns the time estimate and budget and must track them.'],
+ ['The client sees the screens for the first time and asks for a new menu.',0,[0,2],'Planning and Costing: a prototype shown early gets client feedback before production. The project manager (with the interface designer) should have run it.']];
+$('#caseBox').innerHTML=probs.map((p,i)=>`<div class="persona"><b>Problem ${i+1}: ${esc(p[0])}</b><div class="grid2"><div class="field"><label for="ps${i}">Weakest stage</label><select id="ps${i}"><option value="">Choose</option>${stNames.map((s,j)=>`<option value="${j}">${s}</option>`).join('')}</select></div><div class="field"><label for="pr${i}">Role responsible</label><select id="pr${i}">${roleOpts}</select></div></div><div class="field"><label for="pf${i}">One fix</label><input type="text" id="pf${i}" autocomplete="off"></div><div id="pres${i}"></div></div>`).join('');
+$('#caseReset').onclick=()=>{probs.forEach((_,i)=>{$('#ps'+i).value='';$('#pr'+i).value='';$('#pf'+i).value='';$('#pres'+i).innerHTML=''});$('#caseOut').innerHTML=''};
+$('#caseCheck').onclick=()=>{
+  let pts=0;
+  probs.forEach((p,i)=>{
+    const s=$('#ps'+i).value,r=$('#pr'+i).value,f=$('#pf'+i).value;
+    const sOk=s!==''&&+s===p[1],rOk=r!==''&&p[2].includes(+r),fOk=words(f)>=5;
+    pts+=sOk+rOk+fOk;
+    $('#pres'+i).innerHTML=`<span class="badge ${sOk?'ok':'no'}">Stage ${sOk?'correct':'check'}</span> <span class="badge ${rOk?'ok':'no'}">Role ${rOk?'correct':'check'}</span> <span class="badge ${fOk?'ok':'mid'}">${fOk?'Fix written':'Fix needs 5+ words'}</span><div class="meta" style="margin-top:4px">Model answer: ${esc(p[3])}</div>`;
+  });
+  $('#caseOut').innerHTML=`<span class="score">${pts}/12 points</span><br>Stage and role are marked automatically. Your lecturer should judge whether each fix is realistic.`;
+  setBest(3,pts+'/12');
+};
+
+/* ---------- 5 Plan ---------- */
+$('#roleBoxes').innerHTML=roles.map((r,i)=>`<label for="rb${i}"><input type="checkbox" id="rb${i}" value="${r}">${r}</label>`).join('');
+const v=id=>$('#'+id).value.trim();
+function plan(){
+  const rs=roles.filter((r,i)=>$('#rb'+i).checked);
+  const chk=[
+   [!!v('proj')&&rs.length>=4,'Project chosen and at least 4 roles picked'],
+   [v('hw').length>=5,'Hardware and connections listed'],
+   [v('sw').length>=5,'Software listed'],
+   [/^0[1-5]_[^\s()]+\.[A-Za-z0-9]+$/.test(v('nm')),'File name follows the 0X_name.ext pattern'],
+   [['t1','t2','t3','t4'].every(id=>v(id).length>=5),'One task written for every lifecycle stage']];
+  $('#planChecks').innerHTML=chk.map(x=>`<li class="${x[0]?'ok':'no'}">${x[0]?'✓':'○'} ${x[1]}</li>`).join('')+`<li class="meta">Plan completeness: ${chk.filter(x=>x[0]).length}/5</li>`;
+  $('#planOut').textContent=[`PROJECT: ${v('proj')||'-'}`,`TEAM: ${rs.join(', ')||'-'}`,`HARDWARE: ${v('hw')||'-'}`,`SOFTWARE: ${v('sw')||'-'}`,`FILE NAME EXAMPLE: ${v('nm')||'-'}`,`1 Planning and Costing: ${v('t1')||'-'}`,`2 Design and Production: ${v('t2')||'-'}`,`3 Testing: ${v('t3')||'-'}`,`4 Delivery: ${v('t4')||'-'}`].join('\n');
+  setBest(4,chk.filter(x=>x[0]).length+'/5');
+}
+document.querySelectorAll('#p4 input,#p4 select').forEach(e=>{e.oninput=plan;e.onchange=plan});
+$('#copyPlan').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('#planOut').textContent);$('#copyMsg').textContent='Copied'}
+  catch(e){const r=document.createRange();r.selectNodeContents($('#planOut'));const s=getSelection();s.removeAllRanges();s.addRange(r);$('#copyMsg').textContent='Press Ctrl+C to copy'}
+};
+plan();setBest(4,'');
+</script>
+
+</body></html>
