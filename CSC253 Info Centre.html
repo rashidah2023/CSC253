@@ -86,6 +86,13 @@ nav a{color:#c9d6ee;text-decoration:none;font-size:.9rem;padding:6px 4px}nav a:h
 .ck label{display:flex;gap:10px;align-items:flex-start;padding:7px 0;cursor:pointer}.ck input{width:20px;height:20px;margin-top:3px;accent-color:var(--blue)}
 .ph{aspect-ratio:16/10;border-radius:10px;background:repeating-linear-gradient(45deg,#e8eef8,#e8eef8 10px,#f3f6fb 10px,#f3f6fb 20px);display:grid;place-items:center;color:var(--mut);font-size:.85rem;text-align:center;padding:8px;margin-bottom:12px}
 .rb{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+
+/* NEW: tutorials */
+.yt{display:flex;flex-direction:column;gap:6px}
+.yt .tag{align-self:flex-start}
+.yt a.btn{align-self:flex-start;text-decoration:none;margin-top:6px;display:inline-block}
+.yt p{margin:0;color:var(--mut);font-size:.92rem}
+     
 dialog{border:0;border-radius:16px;max-width:520px;width:calc(100% - 32px);padding:26px;box-shadow:0 30px 80px #0007}dialog::backdrop{background:#0b1f3a99}
 #top{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:46px;height:46px;border-radius:50%;border:0;background:var(--blue);color:#fff;font-size:1.3rem;display:none;z-index:40}
 footer{background:var(--navy);color:#b9c8e2;padding:28px 0;text-align:center;font-size:.9rem}
@@ -93,7 +100,7 @@ footer{background:var(--navy);color:#b9c8e2;padding:28px 0;text-align:center;fon
 </head>
 <body>
 <nav aria-label="Main"><div class="wrap"><b>CSC253</b><button id="burger" aria-label="Menu" aria-expanded="false">☰</button>
-<div id="links"><a href="#overview">Overview</a><a href="#journey">Learning Journey</a><a href="#clos">CLOs</a><a href="#assessment">Assessment</a><a href="#tools">Tools</a><a href="#assignments">Assignments</a><a href="#notes">Notes</a><a href="#resources">Resources</a></div></div></nav>
+<div id="links"><a href="#overview">Overview</a><a href="#journey">Learning Journey</a><a href="#clos">CLOs</a><a href="#assessment">Assessment</a><a href="#tools">Tools</a><a href="#assignments">Assignments</a><a href="#notes">Notes</a><a href="#tutorials">Tutorials</a><a href="#resources">Resources</a></div></div></nav>
 
 <header class="hero"><div class="wrap">
 <div><h1><span>CSC253</span>INTERACTIVE MULTIMEDIA</h1>
@@ -144,6 +151,14 @@ footer{background:var(--navy);color:#b9c8e2;padding:28px 0;text-align:center;fon
 
 <section id="notes"><div class="wrap"><h2>Learning resources</h2><p class="sub">Course notes per topic. Buttons marked as pending will be activated when your lecturer uploads materials.</p><div class="grid" id="ng"></div></div></section>
 
+<!-- NEW: Lab Tutorials -->
+<section id="tutorials"><div class="wrap">
+<h2>Lab video tutorials</h2>
+<p class="sub">Free YouTube tutorials for the lab topics. Pick a tool, then open a video search for that skill. Your lecturer may add recommended videos later.</p>
+<div class="rb" id="yf" style="margin:0 0 16px"></div>
+<div class="grid" id="yg"></div>
+</div></section>
+     
 <section id="resources" style="background:#fff"><div class="wrap"><h2>Academic resources</h2><div class="grid" id="rg"></div></div></section>
 
 <section id="progress"><div class="wrap"><h2>My CSC253 checklist</h2><div class="card ck" style="max-width:640px"><h3 id="pp">Your CSC253 Progress: 0%</h3><div class="bar"><b id="pbar" style="width:0"></b></div><div id="cl"></div><button class="btn s o" id="reset">Reset checklist</button><p class="sub" style="margin:10px 0 0;font-size:.85rem">Saved in this browser only.</p></div></div></section>
@@ -355,6 +370,50 @@ const p=Math.round(done.length/CHECK.length*100);$("#pp").textContent="Your CSC2
 document.querySelectorAll("#cl input").forEach(c=>c.onchange=()=>{const i=+c.dataset.i;done=c.checked?[...done,i]:done.filter(x=>x!=i);store.set("csc253ck",done);renderCk()})}
 $("#reset").onclick=()=>{done=[];store.set("csc253ck",done);renderCk()};renderCk();
 
+/* NEW: Lab tutorials (YouTube).
+   Each item: [title, description, search keywords].
+   To pin a specific video, add a 4th value: a full YouTube URL. */
+const YT={
+ "Photopea":[
+  ["Photopea basics for beginners","Interface, tools panel, opening and saving files","photopea tutorial for beginners"],
+  ["Layers & masks","Work non-destructively with layers, masks and blend modes","photopea layers and layer masks tutorial"],
+  ["Remove background & selections","Magic wand, quick selection and refine edge","photopea remove background tutorial"],
+  ["Text effects & poster design","Typography, layer styles and simple posters","photopea text effects poster design tutorial"],
+  ["Image editing & export","Resize, crop, adjustments, export PNG/JPG","photopea resize crop export tutorial"]
+ ],
+ "Audio":[
+  ["Audacity basics","Record, import, trim and export audio","audacity tutorial for beginners"],
+  ["Noise removal & clean-up","Remove background noise and normalise volume","audacity noise reduction tutorial"],
+  ["Editing & mixing tracks","Cut, fade, layer voice with background music","audacity multi track mixing tutorial"],
+  ["Audio effects","Echo, equalizer, pitch and speed changes","audacity effects equalizer tutorial"],
+  ["Audio formats & export","WAV vs MP3, sample rate and file size","audio file formats mp3 wav explained"]
+ ],
+ "Video":[
+  ["Video editing basics","Timeline, trimming, splitting and exporting","video editing tutorial for beginners"],
+  ["Transitions, titles & captions","Add text, transitions and subtitles","video editing transitions titles subtitles tutorial"],
+  ["Add audio to video","Voice-over, background music and volume balance","add voice over and background music to video tutorial"],
+  ["Green screen / chroma key","Replace backgrounds in video","green screen chroma key tutorial"],
+  ["Video export settings","Resolution, frame rate, codec and compression","video export settings resolution frame rate codec explained"]
+ ],
+ "Animation":[
+  ["Animation principles","Squash & stretch, timing, easing, anticipation","12 principles of animation explained"],
+  ["Frame-by-frame animation","Draw and play simple frame animations","frame by frame animation tutorial for beginners"],
+  ["Motion tween & keyframes","Move, scale, rotate and fade objects over time","keyframe animation tutorial for beginners"],
+  ["Animated GIF / short clip","Create and export a looping animation","create animated gif tutorial"],
+  ["Storyboarding an animation","Plan scenes before animating","storyboard for animation tutorial"]
+ ]
+};
+const YTI={Photopea:"🖼️",Audio:"🎧",Video:"🎬",Animation:"✨"};
+let ytCat="Photopea";
+function renderYT(){
+ H($("#yf"),Object.keys(YT).map(c=>`<button class="btn s ${c==ytCat?"":"o"}" data-c="${c}">${YTI[c]} ${c}</button>`).join(""));
+ $("#yf").querySelectorAll("button").forEach(b=>b.onclick=()=>{ytCat=b.dataset.c;renderYT()});
+ H($("#yg"),YT[ytCat].map(v=>{
+  const url=v[3]||"https://www.youtube.com/results?search_query="+encodeURIComponent(v[2]);
+  return `<div class="card yt"><span class="ic">${YTI[ytCat]}</span><span class="tag">${ytCat}</span><h3>${v[0]}</h3><p>${v[1]}</p><a class="btn s" href="${url}" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a></div>`}).join(""));
+}
+renderYT();
+     
 /* search */
 const IDX=[];
 TOPICS.forEach(t=>IDX.push(["Topic",t.n+" "+t.k.join(" "),"overview"]));
@@ -363,6 +422,8 @@ TOOLS.forEach(t=>IDX.push(["Tool",t.slice(0,5).join(" "),"tools"]));
 ASSESS.forEach(a=>IDX.push(["Assessment",a.n+" "+a.clo+" "+a.topic,"assessment"]));
 CLOS.forEach(c=>IDX.push(["CLO",c.id+" "+c.v+" "+c.txt,"clos"]));
 TOPICS.forEach(t=>IDX.push(["Notes","Notes "+t.n,"notes"]));
+Object.keys(YT).forEach(c=>IDX.push(["Tutorial",c+" tutorial video youtube "+YT[c].map(v=>v[0]).join(" "),"tutorials"]));
+     
 $("#q").oninput=e=>{const q=e.target.value.trim().toLowerCase(),r=$("#results");
  if(!q){r.hidden=true;return}
  const m=IDX.filter(x=>x[1].toLowerCase().includes(q)).slice(0,10);r.hidden=false;
