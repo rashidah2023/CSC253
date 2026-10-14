@@ -408,21 +408,9 @@ const YT={
   ["Storyboarding an animation","Plan scenes before animating","storyboard for animation tutorial"]
  ]
 };
-const SHOW=["Photopea"];   // add "Audio","Video","Animation" here later to show them
-const ytCats=Object.keys(YT).filter(c=>SHOW.includes(c));
-let ytCat=ytCats[0];
-function renderYT(){
- const f=$("#yf");
- f.hidden=ytCats.length<2;   // hide the tool buttons when only one tool is shown
- H(f,ytCats.map(c=>`<button class="btn s ${c==ytCat?"":"o"}" data-c="${c}">${YTI[c]} ${c}</button>`).join(""));
- f.querySelectorAll("button").forEach(b=>b.onclick=()=>{ytCat=b.dataset.c;renderYT()});
- H($("#yg"),YT[ytCat].map(v=>{
-  const url=v[3]||"https://www.youtube.com/results?search_query="+encodeURIComponent(v[2]);
-  return `<div class="card yt"><span class="ic">${YTI[ytCat]}</span><span class="tag">${ytCat}</span><h3>${v[0]}</h3><p>${v[1]}</p><a class="btn s" href="${url}" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a></div>`}).join(""));
-}
-renderYT();
 
-/*
+
+
      
 const YTI={Photopea:"🖼️",Audio:"🎧",Video:"🎬",Animation:"✨"};
 let ytCat="Photopea";
@@ -433,7 +421,7 @@ function renderYT(){
   const url=v[3]||"https://www.youtube.com/results?search_query="+encodeURIComponent(v[2]);
   return `<div class="card yt"><span class="ic">${YTI[ytCat]}</span><span class="tag">${ytCat}</span><h3>${v[0]}</h3><p>${v[1]}</p><a class="btn s" href="${url}" target="_blank" rel="noopener noreferrer">▶ Watch on YouTube</a></div>`}).join(""));
 }
-renderYT(); */
+renderYT(); 
      
 /* search */
 const IDX=[];
