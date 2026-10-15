@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Chapter 3: Text – 20-Minute Activity</title>
+<style>
+:root{--bg:#f4f7fc;--card:#fff;--ink:#17223b;--mute:#5d6b86;--line:#d9e1f0;--pri:#2f5fd0;--priI:#fff;--ok:#16794a;--okbg:#e2f6ea;--bad:#b3261e;--badbg:#fde8e6;--hl:#fff4dc;--hdr:#b4c7e7;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141f;--card:#192033;--ink:#e8edf8;--mute:#9aa8c4;--line:#2c3855;--pri:#7ea2ff;--priI:#0b1226;--ok:#6fdca2;--okbg:#12301f;--bad:#ff8d85;--badbg:#3a1815;--hl:#3a3115;--hdr:#22305a}}
+:root[data-theme="dark"]{--bg:#10141f;--card:#192033;--ink:#e8edf8;--mute:#9aa8c4;--line:#2c3855;--pri:#7ea2ff;--priI:#0b1226;--ok:#6fdca2;--okbg:#12301f;--bad:#ff8d85;--badbg:#3a1815;--hl:#3a3115;--hdr:#22305a}
+*{box-sizing:border-box}
+html{scroll-padding-top:90px}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--hdr);padding:16px 16px 12px}
+.wrap{max-width:820px;margin:0 auto;padding:0 14px}
+header .wrap{padding:0}
+h1{margin:0;font-size:1.35rem}
+header p{margin:4px 0 0;color:var(--mute);font-size:.92rem}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;gap:10px;align-items:center;justify-content:space-between;padding-top:8px;padding-bottom:8px;flex-wrap:wrap}
+.timer{font:700 1.4rem ui-monospace,Menlo,monospace}
+.timer.low{color:var(--bad)}
+.pill{font-size:.8rem;padding:3px 10px;border-radius:99px;background:var(--hl);border:1px solid var(--line)}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--pri);background:var(--pri);color:var(--priI);padding:9px 16px;font-weight:600}
+button.sec{background:transparent;color:var(--pri)}
+button:disabled{opacity:.5;cursor:default}
+a.btn{display:inline-block;text-decoration:none;border-radius:10px;border:1px solid var(--pri);color:var(--pri);padding:9px 16px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin:14px 0}
+.card h2{margin:0 0 2px;font-size:1.08rem}
+.meta{color:var(--mute);font-size:.85rem;margin-bottom:10px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px dashed var(--line);flex-wrap:wrap}
+.row:first-of-type{border-top:0}
+.row .t{flex:1 1 55%}
+select,textarea,input[type=text]{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px;max-width:100%}
+select{min-width:150px}
+textarea{width:100%;min-height:110px;resize:vertical}
+.ok{background:var(--okbg);color:var(--ok)}.bad{background:var(--badbg);color:var(--bad)}
+.tag{display:inline-block;padding:2px 9px;border-radius:8px;font-size:.85rem;font-weight:600}
+.cmp{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:8px}
+@media(max-width:600px){.cmp{grid-template-columns:1fr}}
+.box{border:1px solid var(--line);border-radius:10px;padding:10px;white-space:pre-wrap;font-size:.92rem}
+.box b.h{display:block;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em;color:var(--mute);margin-bottom:4px}
+.model{background:var(--okbg)}
+.why{margin-top:8px;font-size:.9rem;color:var(--mute)}
+label.chk{display:flex;gap:8px;align-items:flex-start;margin:4px 0;font-size:.92rem}
+.hidden{display:none}
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:14px 0}
+.score{font-size:1.5rem;font-weight:800}
+footer{color:var(--mute);font-size:.8rem;text-align:center;padding:20px 0 40px}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Chapter 3: Text – Activity</h1><p>Multimedia · 20 minutes · Try on your own first, then reveal the solution and compare.</p></div></header>
+
+<div class="bar"><div class="wrap">
+  <div><span class="timer" id="timer">20:00</span> <span class="pill" id="phase">Not started</span></div>
+  <div class="actions" style="margin:0"><button id="startBtn">▶ Start 20-min timer</button><button class="sec" id="submitBtn" disabled>Submit &amp; see solutions</button></div>
+</div></div>
+
+<main class="wrap">
+  <div class="card" style="background:var(--hl)">
+    <b>How it works</b>
+    <ol style="margin:6px 0 0;padding-left:20px">
+      <li><b>Try (about 18 min):</b> Complete Tasks 1–8 from what you learned in the slides. Solutions stay hidden. Suggested pace: Tasks 1–5 ≈ 9 min, Tasks 6–8 ≈ 9 min.</li>
+      <li><b>Compare (about 2 min):</b> Press <i>Submit</i>. Your answers lock, and the model answers appear beside yours.</li>
+      <li><b>Save:</b> Download your answers and open your Google Drive to upload them.</li>
+    </ol>
+    <div style="margin-top:10px"><input type="text" id="name" placeholder="Your name / student ID" style="width:100%;max-width:340px"></div>
+  </div>
+  <div id="qs"></div>
+  <div id="summary" class="card hidden"></div>
+  <div id="saveBox" class="card hidden">
+    <h2>💾 Save your answers</h2>
+    <div class="meta">This page cannot write directly into your Drive. Download the file, then upload it to Drive (My Drive → New → File upload).</div>
+    <div class="actions"><button id="dlBtn">⬇ Download my answers (.txt)</button><a class="btn" href="https://drive.google.com/drive/my-drive" target="_blank" rel="noopener">Open Google Drive ↗</a></div>
+    <div id="saveMsg" class="meta"></div>
+  </div>
+  <footer>Based on Chapter 3: Text (slides 4–13)</footer>
+</main>
+
+<script>
+const T=20*60;
+const FONTS=['Typeface','Font'];
+const Q=[
+{id:1,type:'match',title:'Task 1 · Typeface or font?',min:2,intro:'A typeface is a family of characters; a font is one size and style of that family. Label each.',opts:['Typeface','Font'],
+ items:[['Verdana','Typeface'],['Times New Roman','Typeface'],['Verdana 20-point Bold Italic','Font'],['Courier 18-point underlined','Font']],
+ why:'A typeface (e.g. Verdana) is the whole family with many sizes and styles. A font is a single size + style within that family (e.g. Verdana 20-point Bold Italic).'},
+{id:2,type:'match',title:'Task 2 · Match the term',min:2,intro:'Choose the term that fits each description.',opts:['Kerning','Leading','Point','Serif','Intercap','Legibility factor'],
+ items:[['Unit used to measure font size','Point'],['Space between lines of text','Leading'],['Spacing between character pairs','Kerning'],['Little decoration at the end of a letter stroke','Serif'],['Uppercase letter in the middle of a word (e.g. GlaxoSmithKline)','Intercap'],['Size, colours, style and leading all affect this','Legibility factor']],
+ why:'Font size is measured in points; kerning = pairs, leading = lines. Intercap = capital inside a word. Size, background/foreground colours, style and leading affect legibility.'},
+{id:3,type:'match',title:'Task 3 · Serif or sans serif?',min:2,intro:'Classify each typeface.',opts:['Serif','Sans serif'],
+ items:[['Times New Roman','Serif'],['Arial','Sans serif'],['Bookman','Serif'],['Tahoma','Sans serif'],['Palatino','Serif'],['Verdana','Sans serif']],
+ why:'Serif (Times New Roman, Century, Bookman, Palatino) are used for body text. Sans serif (Arial, Tahoma, Verdana) have no stroke decoration and are used for headlines and bold statements.'},
+{id:4,type:'match',title:'Task 4 · Hypertext or hypermedia?',min:2,intro:'Which term best describes each example?',opts:['Hypertext','Hypermedia'],
+ items:[['Online help page where clicking a word opens another text page','Hypertext'],['Virtual tour where clicking images or icons plays video and audio','Hypermedia'],['E-book with text-only cross-references','Hypertext'],['Educational game linking text, animation, sound and video','Hypermedia']],
+ why:'Hypertext = text-based links (words keyed/indexed to other words, non-linear). Hypermedia = interactive multimedia with linked text, images, audio, video, animation for navigation and interaction.'},
+{id:5,type:'match',title:'Task 5 · Hypermedia structures',min:2,intro:'Match the structure to its definition.',opts:['Link','Node','Anchor'],
+ items:[['A connection between conceptual elements','Link'],['An accessible topic, document, message or content element','Node'],['A reference from one document to another document, image, sound or file on the Web','Anchor']],
+ why:'Links connect conceptual elements; nodes are the accessible topics/documents/messages/content; anchors are the references pointing to another document, image, sound or file. A builder creates links, identifies nodes and generates an index of words.'},
+{id:6,type:'text',title:'Task 6 · Short answer',min:4,intro:'In 3–5 sentences, explain why text is an important communication element in multimedia applications. Give at least TWO places where text is used.',
+ keys:['Words/symbols are the most common means of communication','Text is vital in menus, navigation systems and content','Developers must use words carefully and accurately (power of meaning)','Names two uses, e.g. navigation menus, buttons, data entry fields, HTML documents, icons'],
+ model:'Text (words and symbols, written or spoken) is the most common means of communication, so it carries meaning in almost every multimedia product. It is a vital element of menus, navigation systems and content, so developers must choose words carefully and accurately. Examples: menus that direct users across modules, buttons such as Submit/Next/Back/Download, fields for reading and data entry, HTML documents with headings and links, and icons that complement text labels.'},
+{id:7,type:'text',title:'Task 7 · Design challenge',min:4,intro:'You are designing a learning app screen with a headline, a paragraph of body text, and a "Next" button. Recommend a typeface, size, and colour choices for each, and justify your decisions using legibility factors.',
+ keys:['Headline: sans serif (e.g. Arial/Verdana/Tahoma), bold, larger size','Body text: serif typeface (e.g. Times New Roman/Palatino) at a readable point size','Strong contrast between background and foreground colours','Suitable leading (line spacing) and consistent style','Button label is short, clear and action-oriented'],
+ model:'Headline: Verdana or Arial, bold, about 28 pt, because sans serif suits headlines and bold statements. Body: Times New Roman or Palatino, about 16–18 pt, with comfortable leading, since serif fonts suit body text. Colour: dark text on a light background (or the reverse) for strong contrast, avoiding similar hues. Button: "Next" in a bold sans serif, high contrast, easy to read at a glance. Keep to two typefaces and consistent styles so the screen stays legible.'},
+{id:8,type:'cloze',title:'Task 8 · Fill in the blanks (type your answers)',min:3,intro:'Type one word in each blank. No word bank – recall it from the slides.',
+ parts:['A ',{a:['hypertext']},' system lets the user navigate through text in a ',{a:['non-linear','nonlinear','non linear']},' way. Interactive multimedia becomes ',{a:['hypermedia']},' when a structure of linked elements is provided. The simplest way to navigate these structures is via ',{a:['buttons','button']},', and location ',{a:['markers','marker']},' make navigation user-friendly. A ',{a:['serif']},' is the little decoration at the end of a letter stroke, and font size is measured in ',{a:['points','point','pt']},'.'],
+ why:'Answers: hypertext, non-linear, hypermedia, buttons, markers, serif, points (slides 7, 8, 11–13).'}
+];
+const KEY='ch3text_v1';
+let S={name:'',ans:{},self:{},phase:'idle',left:T};
+try{const r=localStorage.getItem(KEY);if(r){S=Object.assign(S,JSON.parse(r));if(S.phase==='running')S.phase='idle'}}catch(e){}
+function persist(){try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const $=id=>document.getElementById(id);
+let iv=null;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function fmt(s){return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+
+function render(){
+  const rev=S.phase==='review';
+  let h='';
+  Q.forEach(q=>{
+    h+=`<section class="card"><h2>${q.title}</h2><div class="meta">≈ ${q.min} min · ${esc(q.intro)}</div>`;
+    if(q.type==='match'){
+      q.items.forEach((it,i)=>{
+        const v=(S.ans[q.id]||[])[i]||'';
+        h+=`<div class="row"><div class="t">${esc(it[0])}</div>`;
+        if(!rev){
+          h+=`<select data-q="${q.id}" data-i="${i}"><option value="">Select…</option>${q.opts.map(o=>`<option ${o===v?'selected':''}>${o}</option>`).join('')}</select>`;
+        }else{
+          const ok=v===it[1];
+          h+=`<div><span class="tag ${ok?'ok':'bad'}">${ok?'✔':'✘'} You: ${esc(v||'(blank)')}</span>${ok?'':` <span class="tag model">Answer: ${esc(it[1])}</span>`}</div>`;
+        }
+        h+='</div>';
+      });
+      if(rev)h+=`<div class="why">💡 ${esc(q.why)}</div>`;
+    }else if(q.type==='cloze'){
+      const av=S.ans[q.id]||[];let bi=0;h+='<div style="line-height:2.3">';
+      q.parts.forEach(p=>{
+        if(typeof p==='string'){h+=esc(p);return}
+        const i=bi++,v=av[i]||'';
+        if(!rev)h+=`<input type="text" data-c="${q.id}" data-i="${i}" value="${esc(v)}" style="width:120px;padding:3px 8px" autocomplete="off" autocapitalize="off" spellcheck="false">`;
+        else{const ok=okC(p,v);h+=`<span class="tag ${ok?'ok':'bad'}">${esc(v||'(blank)')}${ok?' ✔':' ✘ → '+esc(p.a[0])}</span>`}
+      });
+      h+='</div>';if(rev)h+=`<div class="why">💡 ${esc(q.why)}</div>`;
+    }else{
+      const v=S.ans[q.id]||'';
+      if(!rev){h+=`<textarea data-t="${q.id}" placeholder="Type your answer here…">${esc(v)}</textarea>`}
+      else{
+        h+=`<div class="cmp"><div class="box"><b class="h">Your answer</b>${esc(v)||'(blank)'}</div><div class="box model"><b class="h">Model answer</b>${esc(q.model)}</div></div>`;
+        h+=`<div style="margin-top:10px"><b style="font-size:.9rem">Self-check: tick the key points your answer included</b>`;
+        q.keys.forEach((k,i)=>{const c=(S.self[q.id]||[])[i];h+=`<label class="chk"><input type="checkbox" data-s="${q.id}" data-i="${i}" ${c?'checked':''}><span>${esc(k)}</span></label>`});
+        h+='</div>';
+      }
+    }
+    h+='</section>';
+  });
+  $('qs').innerHTML=h;
+  $('name').value=S.name||'';
+  $('name').disabled=rev;
+  $('summary').classList.toggle('hidden',!rev);
+  $('saveBox').classList.toggle('hidden',S.phase==='idle'&&!hasAny());
+  if(rev)renderSummary();
+  $('phase').textContent={idle:'Not started',running:'Try it yourself',review:'Review & compare'}[S.phase];
+  $('startBtn').classList.toggle('hidden',S.phase!=='idle');
+  $('submitBtn').classList.toggle('hidden',rev);
+  $('submitBtn').disabled=S.phase==='idle';
+  $('timer').textContent=fmt(S.left);
+  $('timer').classList.toggle('low',S.left<=120&&S.phase==='running');
+  bind();
+}
+function hasAny(){return Object.keys(S.ans).length>0}
+function bind(){
+  document.querySelectorAll('select[data-q]').forEach(el=>el.onchange=()=>{const q=+el.dataset.q,i=+el.dataset.i;const a=S.ans[q]||[];a[i]=el.value;S.ans[q]=a;persist();$('saveBox').classList.remove('hidden')});
+  document.querySelectorAll('input[data-c]').forEach(el=>el.oninput=()=>{const q=+el.dataset.c,i=+el.dataset.i;const a=S.ans[q]||[];a[i]=el.value;S.ans[q]=a;persist();$('saveBox').classList.remove('hidden')});
+  document.querySelectorAll('textarea[data-t]').forEach(el=>el.oninput=()=>{S.ans[+el.dataset.t]=el.value;persist();$('saveBox').classList.remove('hidden')});
+  document.querySelectorAll('input[data-s]').forEach(el=>el.onchange=()=>{const q=+el.dataset.s,i=+el.dataset.i;const a=S.self[q]||[];a[i]=el.checked;S.self[q]=a;persist();renderSummary()});
+}
+const norm=x=>String(x||'').trim().toLowerCase().replace(/[.,;]/g,'');
+function okC(p,v){return p.a.includes(norm(v))}
+function scoreMatch(){let g=0,t=0;Q.forEach(q=>{if(q.type==='match')q.items.forEach((it,i)=>{t++;if((S.ans[q.id]||[])[i]===it[1])g++});if(q.type==='cloze'){let bi=0;q.parts.forEach(p=>{if(typeof p==='string')return;t++;if(okC(p,(S.ans[q.id]||[])[bi++]))g++})}});return[g,t]}
+function scoreText(){let g=0,t=0;Q.filter(q=>q.type==='text').forEach(q=>q.keys.forEach((k,i)=>{t++;if((S.self[q.id]||[])[i])g++}));return[g,t]}
+function renderSummary(){
+  const[a,b]=scoreMatch(),[c,d]=scoreText();
+  $('summary').innerHTML=`<h2>📊 Your comparison</h2><div class="row"><div class="t">Tasks 1–5 and 8 (auto-marked)</div><div class="score">${a} / ${b}</div></div><div class="row"><div class="t">Tasks 6–7 (self-check key points)</div><div class="score">${c} / ${d}</div></div><div class="why">Review every ✘ and any unticked key point, then re-read the matching slide. Wrong answers are the best study notes.</div>`;
+}
+function tick(){
+  S.left=Math.max(0,S.left-1);$('timer').textContent=fmt(S.left);$('timer').classList.toggle('low',S.left<=120);
+  if(S.left%10===0)persist();
+  if(S.left===0){clearInterval(iv);$('phase').textContent="Time's up – press Submit";}
+}
+$('startBtn').onclick=()=>{S.phase='running';S.left=T;persist();render();iv=setInterval(tick,1000)};
+let armed=false;
+$('submitBtn').onclick=()=>{
+  const b=$('submitBtn');
+  if(!armed){armed=true;b.textContent='Sure? Answers will lock – click again';setTimeout(()=>{armed=false;if(S.phase!=='review')b.textContent='Submit & see solutions'},4000);return}
+  clearInterval(iv);S.phase='review';persist();render();window.scrollTo({top:0,behavior:'smooth'});
+};
+$('name').oninput=e=>{S.name=e.target.value;persist()};
+function buildTxt(){
+  const rev=S.phase==='review',L='='.repeat(50);
+  let m=`CHAPTER 3: TEXT - ACTIVITY\n${L}\nName: ${S.name||'-'}\nDate: ${new Date().toLocaleString()}\nStage: ${rev?'Submitted and compared':'Draft (not yet submitted)'}\n`;
+  if(rev){const[a,b]=scoreMatch(),[c,d]=scoreText();m+=`Score: Tasks 1-5 and 8 = ${a}/${b}; Tasks 6-7 self-check = ${c}/${d}\n`}
+  m+='\n';
+  Q.forEach(q=>{
+    m+=`${q.title.toUpperCase()}\n${'-'.repeat(40)}\n`;
+    if(q.type==='match'){q.items.forEach((it,i)=>{const v=(S.ans[q.id]||[])[i]||'(blank)';m+=`  ${it[0]} -> ${v}${rev?(v===it[1]?'  [correct]':`  [wrong - correct: ${it[1]}]`):''}\n`});if(rev)m+=`\nNote: ${q.why}\n`}
+    else if(q.type==='cloze'){let bi=0;q.parts.forEach(p=>{if(typeof p==='string')return;const v=(S.ans[q.id]||[])[bi]||'(blank)';bi++;m+=`  Blank ${bi}: ${v}${rev?(okC(p,v)?'  [correct]':`  [wrong - correct: ${p.a[0]}]`):''}\n`});if(rev)m+=`\nNote: ${q.why}\n`}
+    else{m+=`My answer:\n${S.ans[q.id]||'(blank)'}\n`;if(rev){m+=`\nModel answer:\n${q.model}\n\nKey points I included:\n`;q.keys.forEach((k,i)=>{m+=`  [${(S.self[q.id]||[])[i]?'x':' '}] ${k}\n`})}}
+    m+='\n';
+  });
+  return m;
+}
+$('dlBtn').onclick=async()=>{
+  const msg=$('saveMsg');
+  try{
+    const dl=await claude.use('downloads');
+    if(!dl){msg.textContent='Downloads are not available in this view. Open the page in claude.ai to save.';return}
+    const nm=(S.name||'student').replace(/[^\w\-]+/g,'_');
+    await dl.save({filename:`Ch3_Text_Activity_${nm}.txt`,data:new Blob([buildTxt()],{type:'text/plain'})});
+    msg.textContent='Saved. Now open Google Drive and upload the file.';
+  }catch(e){msg.textContent=(e&&e.code==='declined')?'Save cancelled.':'Could not save here. Try again or copy your answers manually.'}
+};
+render();
+if(S.phase==='review'){}
+</script>
+</body>
+</html>
